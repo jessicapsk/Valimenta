@@ -1,49 +1,77 @@
-# Valimenta
+# DOCUMENTO DE REQUISITOS
+## Sistema de Controle de Validade de Alimentos (Valimenta)
 
-## 1. Visão do Produto
-
-O Valimenta é uma plataforma **web**, com persistência em **nuvem**, que ajuda o usuário a controlar a validade dos alimentos armazenados em casa — da compra ao consumo ou descarte — com o objetivo central de **reduzir o desperdício doméstico de alimentos**.
-
-O sistema é multiusuário: qualquer pessoa pode criar sua própria conta, e cada conta enxerga exclusivamente os próprios dados, sem compartilhamento entre contas.
-
-O sistema permite ao usuário:
-
-* criar uma conta e autenticar-se de forma segura;
-* cadastrar alimentos, informando nome, categoria, quantidade e data de validade original;
-* registrar a abertura de um alimento e acompanhar o prazo de consumo pós-abertura;
-* ter a data limite de consumo calculada automaticamente, respeitando a validade original;
-* acompanhar automaticamente a situação de cada alimento (normal, próximo do vencimento, vence hoje, vencido);
-* visualizar um painel com os alimentos priorizados por urgência de validade;
-* pesquisar, filtrar e ordenar os alimentos cadastrados;
-* registrar o consumo ou o descarte de um alimento, com motivo quando aplicável;
-* consultar o histórico de movimentações;
-* visualizar indicadores de desperdício, para identificar padrões e reduzir perdas futuras.
+**Tipo:** Documento de Requisitos
+**Abordagem:** Engenharia de Requisitos
+**Quadro de acompanhamento (GitHub Projects/Issues):** [github.com/jessicapsk/Valimenta](https://github.com/jessicapsk/Valimenta)
 
 ---
 
-## 2. Glossário
+# 0. Artefatos da atividade
 
-| Termo | Definição |
-|---|---|
-| **Alimento / Grupo** | Um alimento cadastrado pode existir em um ou mais grupos: unidades que compartilham nome, categoria, estado, data de abertura e data limite idênticos. Abrir parte de um lote, por exemplo, separa as unidades em dois grupos distintos. |
-| **Conta** | Identidade do usuário no sistema, autenticada por e-mail e senha. Cada conta enxerga apenas seus próprios dados. |
-| **Estado** | Indica se o alimento (ou grupo) está **Fechado** ou **Aberto**. |
-| **Situação da validade** | Classificação temporal automática: Normal, Próximo do vencimento, Vence hoje ou Vencido. |
-| **Data de validade original** | Data impressa na embalagem pelo fabricante. |
-| **Data de abertura** | Data em que o alimento foi aberto. |
-| **Prazo pós-abertura** | Período sugerido de consumo após a abertura. |
-| **Data Limite Efetiva** | A menor data entre a validade original e a data calculada a partir da abertura — é a data que o sistema efetivamente usa para determinar a situação de validade. |
-| **Baixa** | Ação de retirar unidades do controle ativo. Pode ser por **Consumo** ou por **Descarte**. |
-| **Consumo** | Tipo de baixa em que o alimento foi utilizado; não exige motivo. |
-| **Descarte** | Tipo de baixa em que o alimento foi jogado fora; exige um motivo (ex.: Vencimento, Estragado). |
-| **Movimentação** | Registro histórico de uma baixa (consumo ou descarte), imutável após criado. |
-| **Categoria** | Classificação fixa do alimento, usada para organização e sugestão de prazo pós-abertura. |
+Esta entrega é composta por dois artefatos, conforme solicitado:
+
+1. **Quadro de Histórias de Usuário (priorizado):** [GitHub Issues — Valimenta](https://github.com/jessicapsk/Valimenta) — contém as 16 HUs ativas, organizadas em 4 Épicos, cada uma com sua prioridade de desenvolvimento (ver Seção 12 — MoSCoW).
+2. **Documento de Requisitos (este arquivo):** detalha o processo de Engenharia de Requisitos — elicitação, análise (modelo conceitual), documentação (HUs, regras de negócio e requisitos) e validação (testabilidade) — que fundamentou o quadro acima.
+
+| Épico no quadro (GitHub) | Issue | HUs | Seção neste documento |
+|---|---|---|---|
+| Autenticação | [#17](https://github.com/jessicapsk/Valimenta/issues/17) | HU01–HU04 | Épico 0 |
+| Gestão de estoque | [#18](https://github.com/jessicapsk/Valimenta/issues/18) | HU05–HU09 | Épico 1 |
+| Painel de controle e consultas | [#19](https://github.com/jessicapsk/Valimenta/issues/19) | HU10–HU13 | Épico 2 |
+| Baixas, histórico e indicadores | [#20](https://github.com/jessicapsk/Valimenta/issues/20) | HU14 | Épico 3 |
+| Baixas, histórico e indicadores | [#20](https://github.com/jessicapsk/Valimenta/issues/20) | HU15–HU16 | Épico 4 |
+
+> No quadro do GitHub as 16 HUs estão agrupadas em 4 Épicos; neste documento o quarto épico do quadro (*Baixas, histórico e indicadores*) é detalhado em dois blocos internos (Épico 3 — Consumo e Descarte; Épico 4 — Histórico e Análise) para separar o registro da baixa (HU14) das consultas analíticas (HU15–HU16). O conteúdo das HUs é idêntico ao do quadro.
 
 ---
 
-## 3. Premissas, Restrições e Escopo
+# 1. Visão do Produto
 
-### 3.1 Premissas
+O sistema consiste em uma aplicação web para controle da validade de alimentos.
+
+O sistema permitirá ao usuário:
+
+* cadastrar alimentos;
+* informar quantidade e data de validade original;
+* informar a categoria do alimento;
+* registrar a abertura de alimentos;
+* calcular a data limite de consumo considerando a abertura;
+* acompanhar automaticamente a situação da validade;
+* visualizar alimentos por proximidade do vencimento;
+* pesquisar e filtrar alimentos;
+* registrar consumo e descarte;
+* consultar o histórico das movimentações;
+* visualizar informações relacionadas ao desperdício.
+
+O sistema será disponibilizado em ambiente web e utilizará armazenamento em nuvem.
+
+Cada conta possuirá seus próprios dados, sem compartilhamento de alimentos entre contas.
+
+---
+
+# 2. Glossário
+
+| Termo                     | Definição                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Alimento                  | Item cadastrado pelo usuário para acompanhamento de validade e quantidade.                                    |
+| Estado                    | Indica se o alimento está **Fechado** ou **Aberto**.                                                          |
+| Situação da validade      | Classificação do alimento em relação à sua data limite: Normal, Próximo do vencimento, Vence hoje ou Vencido. |
+| Data de validade original | Data de validade informada na embalagem do alimento.                                                          |
+| Data de abertura          | Data em que o alimento foi aberto.                                                                            |
+| Prazo pós-abertura        | Período durante o qual o alimento deve ser consumido após sua abertura.                                       |
+| Data limite               | Data efetivamente utilizada pelo sistema para determinar a situação da validade.                              |
+| Grupo                     | Conjunto de unidades do mesmo alimento que compartilham as mesmas características de controle.                |
+| Baixa                     | Registro da retirada de uma ou mais unidades do controle ativo por consumo ou descarte.                       |
+| Alimento ativo            | Alimento que ainda possui pelo menos uma unidade sob controle.                                                |
+| Movimentação              | Registro de consumo ou descarte realizado pelo usuário.                                                       |
+| Categoria                 | Classificação do alimento utilizada para organização e sugestão de prazo pós-abertura.                        |
+
+---
+
+# 3. Premissas, Restrições e Escopo
+
+## 3.1 Premissas
 
 * O sistema será uma aplicação web.
 * O sistema será baseado em armazenamento em nuvem.
@@ -51,27 +79,31 @@ O sistema permite ao usuário:
 * Cada usuário possuirá uma conta própria.
 * O acesso será realizado por e-mail e senha.
 * Os dados de cada conta serão isolados.
+* A data utilizada pelo sistema será baseada na data local do dispositivo/navegador do usuário.
 
-### 3.2 Restrições Técnicas
+## 3.2 Restrições
 
 * A quantidade será registrada apenas em unidades inteiras.
 * Não serão utilizadas medidas de peso ou volume.
-* As categorias serão definidas pelo sistema (lista fixa).
+* As categorias serão definidas pelo sistema.
 * O histórico de movimentações será somente para consulta.
 * Movimentações já registradas não poderão ser editadas ou excluídas.
 * O sistema utilizará HTTPS.
 * Senhas deverão ser armazenadas de forma segura, utilizando hash.
 
-### 3.3 Fora de Escopo
+## 3.3 Fora do escopo
 
 Não fazem parte do escopo atual:
 
 * login social;
 * verificação de e-mail;
 * autenticação em dois fatores;
-* notificações por SMS, e-mail ou push;
+* notificações por SMS;
+* notificações por e-mail;
+* notificações push;
 * compartilhamento de alimentos entre contas;
-* perfis públicos ou feed social;
+* perfis públicos;
+* feed social;
 * cadastro por peso ou volume;
 * alteração ou exclusão do histórico;
 * exportação manual de dados;
@@ -79,81 +111,194 @@ Não fazem parte do escopo atual:
 
 ---
 
-## 4. Modelo Conceitual do Domínio
+# 4. Modelo Conceitual
 
-**Conta** — identificador, e-mail (único), senha (hash).
+## 4.1 Conta
 
-**Alimento** — nome, categoria, quantidade, estado, data de validade original, data de abertura (quando aplicável), prazo pós-abertura, data limite efetiva. Pertence a exatamente uma conta.
+Representa o usuário cadastrado no sistema.
 
-**Categoria** — nome, prazo pós-abertura padrão sugerido (fixo, definido pelo sistema).
+Principais informações:
 
-**Movimentação** — alimento/grupo de origem, tipo (Consumo/Descarte), quantidade, data e hora, motivo (quando descarte). Guarda uma cópia (snapshot) do nome e da categoria do alimento no momento em que ocorreu (RN21) e pertence a exatamente uma conta.
+* identificador;
+* e-mail;
+* senha armazenada de forma segura.
 
-```
-Conta 1 ──── N Alimento 1 ──── N Movimentação
-                  │
-                  N
-                  │
-                  1
-              Categoria
-```
+## 4.2 Alimento
+
+Representa o item controlado pelo usuário.
+
+Principais informações:
+
+* nome;
+* categoria;
+* quantidade;
+* estado;
+* data de validade original;
+* data de abertura, quando aplicável;
+* prazo pós-abertura;
+* data limite.
+
+## 4.3 Movimentação
+
+Representa uma retirada de unidades do controle ativo.
+
+Pode representar:
+
+* consumo;
+* descarte.
+
+Uma movimentação registra:
+
+* alimento/grupo relacionado;
+* tipo da movimentação;
+* quantidade;
+* data e hora;
+* motivo, quando for descarte.
+
+## 4.4 Categoria
+
+Representa a classificação utilizada pelo sistema.
+
+Cada categoria possui um prazo pós-abertura padrão sugerido, definido pelo sistema. O usuário pode ajustar esse valor pontualmente para um alimento específico no momento do cadastro/abertura, sem alterar o padrão da categoria.
 
 ---
 
-## 5. Regras de Negócio (RNs) e Regras de Integridade (RIs)
+# 5. Requisitos de Negócio
 
-### 5.1 Regras de Negócio
+## RN01 — Data de validade original
 
-**RN01 — Data de validade original**
+O sistema deve utilizar a data de validade informada pelo usuário como referência da validade original do alimento.
+
 O alimento permanece válido durante a data impressa na embalagem e passa a ser considerado vencido no dia seguinte à data limite.
 
-**RN02 — Prazo pós-abertura**
-Quando um alimento possuir prazo pós-abertura, o sistema calcula uma data limite a partir da data de abertura.
-*Exemplo:* abertura dia 08 + prazo de 7 dias = data limite pós-abertura dia 15.
+## RN02 — Prazo pós-abertura
 
-**RN03 — Data limite efetiva**
-Quando houver simultaneamente validade original e prazo pós-abertura, a data limite efetiva é a **menor** entre as duas: `Data limite = menor(validade original, data limite pós-abertura)`.
+Quando um alimento possuir prazo pós-abertura, o sistema deve calcular uma data limite a partir da data de abertura.
 
-**RN04 — Situação da validade**
+Exemplo:
 
-| Situação | Condição |
-|---|---|
-| Normal | Mais de 3 dias restantes |
-| Próximo do vencimento | De 1 a 3 dias restantes |
-| Vence hoje | Data atual igual à data limite |
-| Vencido | Data atual posterior à data limite |
+* Data de abertura: dia 08;
+* Prazo pós-abertura: 7 dias;
+* Data limite pós-abertura: dia 15.
 
-**RN05 — Estado do alimento**
-Estados possíveis: Fechado, Aberto. O usuário pode cadastrar um alimento já aberto. Uma vez aberto, o alimento nunca retorna ao estado Fechado.
+## RN03 — Data limite efetiva
 
-**RN06 — Identificação do alimento**
-Dentro de uma mesma conta, nome + categoria identificam o tipo de alimento. A comparação de nome é case-insensitive e ignora espaços nas bordas; a categoria é comparada por correspondência exata com a lista fixa (RN13).
+Quando houver simultaneamente uma validade original e uma limitação pós-abertura, a data limite efetiva deverá ser a menor entre as duas.
 
-**RN07 — Formação de grupos**
-Unidades permanecem agrupadas quando compartilham alimento, categoria, estado, data de abertura e data limite.
+**Data limite = menor(data de validade original, data limite pós-abertura).**
 
-**RN08 — Abertura parcial**
-Ao abrir parte das unidades de um grupo, o sistema separa as unidades em grupos distintos conforme o novo estado. *Exemplo:* 3 fechadas → abre 1 → resultado: 2 fechadas + 1 aberta.
+## RN04 — Situação da validade
 
-**RN09 — Motivo do descarte**
-Todo descarte exige um motivo: Vencimento, Estragado, Embalagem danificada, Não será consumido, Outro. Quando "Outro", é exigida uma descrição.
+O sistema deve classificar automaticamente cada alimento conforme a diferença entre a data atual e sua data limite:
 
-**RN10 — Data de abertura**
-Deve ser igual ou anterior à data atual; nunca futura.
+| Situação              | Condição                           |
+| --------------------- | ----------------------------------- |
+| Normal                | Mais de 3 dias restantes           |
+| Próximo do vencimento | De 1 a 3 dias restantes            |
+| Vence hoje            | Data atual igual à data limite     |
+| Vencido               | Data atual posterior à data limite |
 
-**RN11 — Ordenação por validade**
-A lista de alimentos prioriza os itens por proximidade da data limite (menor prazo primeiro). Em caso de empate, a ordenação segue por ordem alfabética do nome.
+## RN05 — Estado do alimento
 
-**RN12 — Período de alerta**
-São sinalizados como alerta os alimentos que vencem hoje ou em até 3 dias. Alimentos vencidos permanecem identificados como vencidos, mas não contam como alerta de vencimento futuro.
+Um alimento poderá possuir os seguintes estados:
 
-**RN13 — Categorias**
-Categorias predefinidas pelo sistema: Laticínios, Carne, Hortifruti, Padaria, Bebidas, Enlatados e Conservas, Congelados, Grãos e Cereais, Outros.
+* Fechado;
+* Aberto.
 
-**RN14 — Prazo padrão por categoria**
-Cada categoria possui um prazo pós-abertura padrão sugerido, usado no cadastro/abertura e ajustável pontualmente para um item específico, sem alterar o padrão da categoria. O padrão é definido pelo sistema e é o mesmo para todas as contas.
+Durante o cadastro, o usuário poderá informar que o alimento já está aberto.
 
-*Valores padrão de fábrica (suposição a validar — ver Matriz de Riscos 11.5):*
+Após aberto, o alimento não poderá retornar ao estado Fechado.
+
+## RN06 — Identificação do alimento
+
+Dentro de uma mesma conta, o nome e a categoria serão utilizados para identificar o tipo de alimento.
+
+A comparação de nome é **case-insensitive** e ignora espaços extras no início/fim do texto (ex.: "Leite", "leite" e " Leite " são tratados como o mesmo nome). A categoria é comparada por correspondência exata com um dos valores da lista fixa (RN13).
+
+## RN07 — Formação de grupos
+
+Unidades poderão permanecer agrupadas quando possuírem as mesmas características de controle, incluindo:
+
+* alimento;
+* categoria;
+* estado;
+* data de abertura;
+* data limite.
+
+## RN08 — Abertura parcial
+
+Quando apenas parte das unidades de um grupo for aberta, o sistema deverá separar as unidades em grupos de acordo com seus estados e respectivas informações de validade.
+
+Exemplo:
+
+* 3 unidades fechadas;
+* usuário abre 1 unidade;
+* resultado: 2 unidades fechadas + 1 unidade aberta.
+
+## RN09 — Motivo do descarte
+
+Todo descarte deverá possuir um motivo.
+
+Os motivos disponíveis serão:
+
+* Vencimento;
+* Estragado;
+* Embalagem danificada;
+* Não será consumido;
+* Outro.
+
+Quando o usuário selecionar **Outro**, deverá informar uma descrição.
+
+## RN10 — Data de abertura
+
+A data de abertura deve ser igual ou anterior à data atual.
+
+Não será permitido informar uma data futura.
+
+## RN11 — Ordenação por validade
+
+A lista de alimentos deverá priorizar os itens de acordo com a proximidade da data limite.
+
+Alimentos com menor prazo restante deverão aparecer antes daqueles com maior prazo restante.
+
+Em caso de empate na data limite, os alimentos são ordenados em ordem alfabética pelo nome.
+
+## RN12 — Período de alerta
+
+O sistema deverá sinalizar como alerta os alimentos que:
+
+* vencem hoje;
+* vencem em 1 dia;
+* vencem em 2 dias;
+* vencem em 3 dias.
+
+Alimentos vencidos deverão permanecer identificados como vencidos, mas não serão considerados alertas de vencimento futuro.
+
+## RN13 — Categorias
+
+O sistema deverá possuir categorias predefinidas.
+
+Categorias propostas:
+
+* Laticínios;
+* Carne;
+* Hortifruti;
+* Padaria;
+* Bebidas;
+* Enlatados e Conservas;
+* Congelados;
+* Grãos e Cereais;
+* Outros.
+
+## RN14 — Prazo padrão por categoria
+
+Cada categoria deverá possuir um prazo pós-abertura padrão sugerido.
+
+Esse prazo será utilizado como sugestão durante o cadastro ou abertura de alimentos.
+
+Esse prazo será utilizado como sugestão durante o cadastro ou abertura de alimentos, podendo ser ajustado pelo usuário pontualmente para aquele item específico (RN02), sem alterar o padrão da categoria. O prazo padrão de cada categoria é definido pelo sistema e é o mesmo para todas as contas — não há configuração persistente por conta nesta versão.
+
+**Valores padrão de fábrica** *(suposição para viabilizar teste — sujeita a validação, ver Riscos 13.2)*:
 
 | Categoria | Prazo padrão pós-abertura |
 |---|---|
@@ -167,223 +312,563 @@ Cada categoria possui um prazo pós-abertura padrão sugerido, usado no cadastro
 | Grãos e Cereais | 60 dias |
 | Outros | 7 dias |
 
-**RN15 — Alteração de quantidade**
-A quantidade só pode ser corrigida enquanto o grupo específico não tiver nenhuma movimentação associada — serve exclusivamente para corrigir erro de cadastro. Após qualquer movimentação no grupo, a quantidade não pode mais ser alterada diretamente; consumo/descarte passam a ser feitos pela funcionalidade de baixa.
+## RN15 — Alteração de quantidade
 
-**RN16 — Referência de data**
-Os cálculos de validade usam a data local do dispositivo/navegador do usuário.
+A quantidade cadastrada poderá ser corrigida enquanto não houver movimentação relacionada **àquele grupo específico** (RN07) — a existência de movimentação em outro grupo do mesmo alimento (ex.: baixa nas unidades abertas) não bloqueia a correção de quantidade das unidades fechadas, e vice-versa.
 
-**RN17 — Isolamento de dados (multi-tenant)**
-Cada conta acessa somente seus próprios alimentos e movimentações — tanto em leitura quanto em escrita (cadastro, edição, abertura, baixa, remoção).
+Após existir uma movimentação no grupo, a quantidade daquele grupo não poderá ser alterada diretamente.
 
-**RN18 — E-mail único**
-Não pode existir mais de uma conta com o mesmo e-mail.
+Consumo e descarte deverão ser registrados por meio da funcionalidade de baixa.
 
-**RN19 — Senha**
-Mínimo de 8 caracteres. Regras adicionais de complexidade permanecem em aberto.
+## RN16 — Referência de data
 
-**RN20 — Remoção de alimento e preservação do histórico**
-A remoção completa de um alimento só é permitida quando o grupo não possuir nenhuma movimentação registrada — é a correção de um erro de cadastro, não o encerramento normal do ciclo de vida do alimento. Havendo movimentação, a quantidade restante deve ser zerada via baixa, preservando o motivo no histórico. A remoção não apaga movimentações preexistentes de outros grupos do mesmo alimento.
+O cálculo de validade e a mudança automática de situação deverão considerar a data local do dispositivo/navegador do usuário.
 
-**RN21 — Integridade da identificação (snapshot no histórico)**
-Toda movimentação registra uma cópia do nome e da categoria do alimento no momento em que ocorreu; edições posteriores no alimento não alteram essa cópia. O sistema nunca funde automaticamente grupos existentes apenas porque nome/categoria passaram a coincidir após uma edição.
+## RN17 — Isolamento de dados
 
-### 5.2 Regras de Integridade
+Cada conta deverá acessar somente os alimentos e movimentações pertencentes à própria conta.
 
-**RI01 — Nome:** obrigatório no cadastro e na edição.
+Um usuário não poderá visualizar, alterar ou excluir dados pertencentes a outra conta.
 
-**RI02 — Validade:** a data de validade original é obrigatória no cadastro e na edição.
+Esta regra se aplica tanto a operações de leitura quanto de escrita — cadastrar, editar, abrir, dar baixa ou remover um alimento são operações que também precisam validar a propriedade da conta, não apenas as telas de consulta.
 
-**RI03 — Quantidade:** número inteiro ≥ 1; se não informada, assume-se 1.
+## RN18 — E-mail único
 
-**RI04 — Unidade de medida:** exclusivamente unidades inteiras — não são aceitos kg, g, L, ml ou outras medidas de peso/volume.
+Não poderá existir mais de uma conta cadastrada com o mesmo endereço de e-mail.
 
----
+## RN19 — Senha
 
-## 6. Definição de Pronto (DoR)
+A senha deverá possuir no mínimo 8 caracteres.
 
-### 6.1 Definition of Ready (DoR)
+Regras adicionais de complexidade permanecem como questão em aberto.
 
-Uma User Story está pronta para desenvolvimento quando:
+## RN20 — Remoção de alimento e preservação do histórico
 
-* possui objetivo e valor claramente definidos;
-* possui ator identificado;
-* possui escopo compreensível;
-* possui critérios de aceitação claros e testáveis;
-* possui regras de negócio aplicáveis identificadas;
-* possui entradas e saídas relevantes definidas;
-* não possui ambiguidades funcionais críticas;
-* possui dependências conhecidas e suficientemente tratadas;
-* possui tamanho adequado para planejamento;
-* possui requisitos não funcionais relevantes identificados;
-* está suficientemente refinada para permitir estimativa e planejamento técnico.
+A remoção completa de um alimento (HU09) só é permitida quando o grupo não possuir **nenhuma movimentação de consumo ou descarte registrada** — ou seja, a remoção existe para corrigir um erro de cadastro, não para encerrar o ciclo de vida normal de um alimento.
 
-A DoR é uma definição geral do projeto e não precisa ser repetida integralmente em cada User Story. Dependências entre histórias são aceitáveis, desde que conhecidas e suficientemente especificadas.
+Quando já existir ao menos uma movimentação associada ao grupo, ele não pode mais ser removido diretamente: a quantidade restante deve ser zerada por meio da funcionalidade de baixa (HU14/RN09), preservando o motivo do descarte ou o registro de consumo no histórico.
+
+A remoção, quando permitida, não apaga movimentações preexistentes de outros grupos do mesmo alimento (RN06) — apenas o grupo específico removido deixa de existir.
+
+## RN21 — Integridade da identificação
+
+Toda movimentação registra uma cópia do nome e da categoria do alimento no momento em que a movimentação ocorreu. Alterações posteriores no nome ou na categoria do alimento (via HU08) não modificam essa cópia — o histórico sempre exibe os dados como eram na data da movimentação, não os dados atuais do alimento.
+
+O sistema não deverá realizar fusão automática entre grupos existentes apenas porque seus dados de identificação foram alterados.
 
 ---
 
-## 7. User Stories (Épicos 0 a 4 — HU01 a HU16)
+# 6. Requisitos de Informação
 
-### Épico 0/1: Autenticação e Acesso
+## RI01 — Nome
 
-**HU01 — Criar Conta**
-Como visitante, quero criar uma conta com e-mail e senha, para cadastrar e acompanhar meus alimentos.
-*Critérios:* e-mail único e válido (RN18); senha atende ao mínimo (RN19); após criar, autenticação automática; conta nova inicia vazia; nenhum dado de outra conta é exposto (RN17).
-**Prioridade:** Must Have
+O nome do alimento é obrigatório no cadastro.
 
-**HU02 — Login**
-Como usuário cadastrado, quero entrar com minhas credenciais, para acessar meus alimentos.
-*Critérios:* credenciais inválidas não revelam se o erro foi no e-mail ou na senha; após login, acesso apenas aos próprios dados (RN17); funcionalidades protegidas exigem autenticação.
-**Prioridade:** Must Have
+## RI02 — Validade
 
-**HU03 — Recuperar Senha**
-Como usuário sem acesso à conta, quero redefinir minha senha por e-mail, para recuperar o acesso.
-*Critérios:* não revela se o e-mail existe na base; link de redefinição com prazo de validade e uso único; nova senha respeita RN19.
-**Prioridade:** Should Have *(depende de serviço de e-mail — ver Matriz de Riscos 11.8)*
+A data de validade original é obrigatória no cadastro.
 
-**HU04 — Logout**
-Como usuário autenticado, quero sair da minha conta, para proteger meu acesso.
-*Critérios:* encerra a sessão; redireciona ao login; funcionalidades protegidas ficam inacessíveis após o logout.
+## RI03 — Quantidade
+
+A quantidade deve ser um número inteiro maior ou igual a 1.
+
+Caso o usuário não informe a quantidade, o sistema deverá considerar 1 unidade.
+
+## RI04 — Unidade de medida
+
+A quantidade deverá ser representada exclusivamente em unidades inteiras.
+
+Não serão aceitos valores como:
+
+* quilogramas;
+* gramas;
+* litros;
+* mililitros;
+* outras medidas de peso ou volume.
+
+---
+
+# 7. User Stories
+
+## Épico 0 — Acesso e Autenticação (quadro: *Autenticação*, [Issue #17](https://github.com/jessicapsk/Valimenta/issues/17))
+
+### HU01 — Criar conta — [Issue #1](https://github.com/jessicapsk/Valimenta/issues/1)
+
+**Como visitante, quero criar uma conta utilizando e-mail e senha, para cadastrar e acompanhar meus alimentos no sistema.**
+
+**Critérios de aceitação:**
+
+* O sistema deve solicitar e-mail e senha.
+* O e-mail deve possuir formato válido.
+* O e-mail não poderá estar associado a outra conta.
+* A senha deve atender ao requisito mínimo definido em RN19.
+* Após o cadastro bem-sucedido, o usuário deverá ser autenticado.
+* O usuário deverá ser direcionado para a área de alimentos.
+* Uma nova conta deverá iniciar sem alimentos cadastrados.
+* O usuário não deverá visualizar dados pertencentes a outras contas.
+
 **Prioridade:** Must Have
 
 ---
 
-### Épico 2: Gestão de Estoque
+### HU02 — Fazer login — [Issue #2](https://github.com/jessicapsk/Valimenta/issues/2)
 
-**HU05 — Cadastrar Alimento**
-Como usuário, quero cadastrar um alimento com nome, categoria, quantidade e validade, para acompanhar seu ciclo de vida.
-*Critérios:* nome e validade obrigatórios (RI01/RI02); quantidade inteira ≥ 1 (RI03), padrão 1; estado inicial Fechado (RN05), com opção de cadastrar já Aberto; prazo pós-abertura sugerido pela categoria (RN14); data limite calculada (RN02/RN03); alerta se a validade já estiver vencida no cadastro; alimento associado exclusivamente à conta autenticada (RN17).
+**Como usuário cadastrado, quero entrar no sistema utilizando minhas credenciais, para acessar e acompanhar meus alimentos cadastrados.**
+
+**Critérios de aceitação:**
+
+* O sistema deve solicitar e-mail e senha.
+* Credenciais válidas devem permitir o acesso.
+* Credenciais inválidas devem impedir o acesso.
+* Em caso de erro, o sistema deve apresentar uma mensagem sem revelar informações sensíveis sobre a conta.
+* Após o login, o usuário deverá ser direcionado para a lista de alimentos.
+* O usuário deverá visualizar somente os dados pertencentes à própria conta.
+* Funcionalidades protegidas não deverão ser acessíveis sem autenticação.
+
 **Prioridade:** Must Have
 
-**HU06 — Marcar como Aberto**
-Como usuário, quero registrar a abertura de um alimento fechado, para controlar o prazo de consumo pós-abertura.
-*Critérios:* disponível só para alimentos fechados da própria conta (RN17); quantidade aberta ≥ 1 e ≤ disponível (RI03); data de abertura ≤ hoje (RN10); prazo sugerido pela categoria, editável; nova data limite calculada e exibida antes da confirmação; unidades abertas formam um novo grupo (RN07/RN08); alimento não retorna a Fechado (RN05).
-**Prioridade:** Must Have
+---
 
-**HU07 — Editar Alimento**
-Como usuário, quero editar os dados de um alimento — incluindo corrigir a data de abertura —, para manter o cadastro correto.
-*Critérios:* disponível só para alimentos da própria conta (RN17); permite editar nome, categoria, validade original e, para alimentos abertos, data de abertura e prazo pós-abertura; data de abertura nunca futura (RN10); estado não pode voltar de Aberto para Fechado (RN05); alterações relevantes recalculam a data limite e a situação (RN02–RN04); histórico preservado, sem fusão automática de grupos (RN20/RN21); mesmas validações do cadastro (RI01–RI04) reaplicadas na edição.
+### HU03 — Recuperar senha — [Issue #3](https://github.com/jessicapsk/Valimenta/issues/3)
+
+**Como usuário que não consegue acessar sua conta, quero redefinir minha senha, para recuperar o acesso ao sistema.**
+
+**Critérios de aceitação:**
+
+* O usuário deve informar o e-mail associado à conta.
+* O sistema não deverá revelar se o e-mail informado está ou não cadastrado.
+* Para uma conta existente, deverá ser disponibilizado um mecanismo para redefinição da senha.
+* O mecanismo de redefinição deverá possuir prazo de validade.
+* O mecanismo deverá ser utilizado uma única vez.
+* A nova senha deverá respeitar as regras definidas para senha.
+* Após a redefinição, o usuário deverá conseguir acessar a conta com a nova senha.
+
 **Prioridade:** Should Have
 
-**HU08 — Editar Quantidade**
-Como usuário, quero corrigir a quantidade cadastrada de um alimento, para reparar um erro de digitação.
-*Critérios:* disponível só para alimentos da própria conta (RN17); permitida apenas enquanto o grupo não possuir nenhuma movimentação registrada (RN15); após qualquer baixa no grupo, a opção deixa de ser oferecida — o ajuste passa a ser feito via HU14; novo valor deve ser inteiro ≥ 1 (RI03/RI04).
-**Prioridade:** Should Have
+**Questões pendentes:** serviço de envio de e-mail e validade do link.
 
-**HU09 — Remover Alimento**
-Como usuário, quero remover um alimento que cadastrei por engano, para corrigir o erro sem deixar um registro incorreto.
-*Critérios:* disponível só para alimentos da própria conta (RN17); permitida apenas quando o grupo não possuir nenhuma movimentação registrada (RN20) — cobre exclusivamente erro de cadastro; exige confirmação; não afeta o histórico de outros grupos do mesmo alimento (RN06).
+---
+
+### HU04 — Fazer logout — [Issue #4](https://github.com/jessicapsk/Valimenta/issues/4)
+
+**Como usuário autenticado, quero sair da minha conta, para encerrar meu acesso ao sistema quando terminar de utilizá-lo.**
+
+**Critérios de aceitação:**
+
+* O sistema deve encerrar a sessão autenticada.
+* O usuário deverá ser direcionado para a tela de login.
+* Funcionalidades protegidas não deverão permanecer acessíveis após o logout.
+* Os dados cadastrados não deverão ser alterados pelo logout.
+
 **Prioridade:** Should Have
 
 ---
 
-### Épico 3: Painel de Controle e Consultas
+## Épico 1 — Cadastro e Gerenciamento de Alimentos (quadro: *Gestão de estoque*, [Issue #18](https://github.com/jessicapsk/Valimenta/issues/18))
 
-**HU10 — Visualizar Validades e Alertas (Dashboard)**
-Como usuário, quero ver meus alimentos organizados por urgência de validade, para saber o que verificar primeiro.
-*Critérios:* lista ordenada por RN11; situação exibida por texto e/ou ícone, nunca só por cor (RNF04); itens em período de alerta (RN12) recebem destaque adicional; vencidos continuam visíveis; atualização automática conforme passam os dias; lista vazia mostra mensagem própria, distinta de erro.
+### HU05 — Cadastrar alimento — [Issue #5](https://github.com/jessicapsk/Valimenta/issues/5)
+
+**Como usuário, quero cadastrar um alimento informando seus dados, para acompanhar sua validade e quantidade.**
+
+**Critérios de aceitação:**
+
+* O nome do alimento deve ser obrigatório.
+* A data de validade original deve ser obrigatória.
+* A categoria deve ser informada.
+* A quantidade deve ser um número inteiro maior ou igual a 1.
+* Quando a quantidade não for informada, o sistema deverá considerar 1.
+* O estado padrão deverá ser Fechado.
+* O usuário poderá informar que o alimento já está aberto.
+* Caso o alimento esteja aberto, a data de abertura deverá ser informada.
+* A data de abertura não poderá ser futura.
+* O sistema deverá sugerir o prazo pós-abertura correspondente à categoria.
+* O usuário poderá alterar o prazo sugerido.
+* O sistema deverá calcular a data limite efetiva.
+* Caso a validade original já tenha passado, o sistema deverá alertar o usuário e solicitar confirmação antes de concluir o cadastro.
+* Um alimento fechado não deverá possuir data de abertura.
+* O alimento cadastrado é associado exclusivamente à conta autenticada (RN17).
+
 **Prioridade:** Must Have
 
-**HU11 — Pesquisar Alimentos**
-Como usuário, quero pesquisar alimentos pelo nome, para encontrar rapidamente o item procurado.
-*Critérios:* correspondência parcial e case-insensitive (RN06); busca restrita à própria conta (RN17); combinável com os filtros de HU12; sem resultados, mensagem própria distinta de erro.
+---
+
+### HU06 — Registrar abertura — [Issue #6](https://github.com/jessicapsk/Valimenta/issues/6)
+
+**Como usuário, quero registrar a abertura de um alimento fechado, para começar a controlar o prazo de consumo após a abertura.**
+
+**Critérios de aceitação:**
+
+* A funcionalidade deverá estar disponível somente para alimentos fechados **pertencentes à conta autenticada** (RN17).
+* O usuário deverá informar quantas unidades foram abertas.
+* A quantidade aberta deve ser maior ou igual a 1.
+* A quantidade aberta não poderá ser superior à quantidade disponível.
+* A data de abertura deverá ser igual ou anterior à data atual.
+* O sistema deverá sugerir o prazo pós-abertura da categoria.
+* O usuário poderá alterar o prazo sugerido.
+* O sistema deverá calcular a nova data limite.
+* O sistema deverá apresentar o resultado antes da confirmação.
+* As unidades abertas deverão passar para o estado Aberto.
+* As unidades restantes deverão permanecer Fechadas.
+* O alimento não deverá retornar ao estado Fechado depois de aberto.
+
+**Prioridade:** Must Have
+
+---
+
+### HU07 — Corrigir data de abertura — [Issue #7](https://github.com/jessicapsk/Valimenta/issues/7)
+
+**Como usuário, quero corrigir a data de abertura de um alimento, para manter correta a data limite de consumo.**
+
+**Critérios de aceitação:**
+
+* A funcionalidade deverá estar disponível somente para alimentos abertos **pertencentes à conta autenticada** (RN17).
+* A nova data deverá ser igual ou anterior à data atual.
+* A alteração deverá recalcular a data limite.
+* A situação da validade deverá ser atualizada.
+* A alteração não poderá modificar ou apagar movimentações existentes.
+* O alimento não poderá retornar ao estado Fechado.
+
 **Prioridade:** Should Have
 
-**HU12 — Filtrar por Estado e Categoria**
-Como usuário, quero filtrar meus alimentos por estado (Aberto/Fechado) e por categoria, para localizar mais facilmente o que procuro.
-*Critérios:* seleção de Todos/Aberto/Fechado (RN05) e de uma categoria da lista fixa (RN13), combináveis entre si e com a pesquisa (HU11); ordenação por validade preservada (RN11); sem correspondências, mensagem própria distinta de erro.
+---
+
+### HU08 — Editar alimento — [Issue #8](https://github.com/jessicapsk/Valimenta/issues/8)
+
+**Como usuário, quero editar os dados de um alimento, para corrigir ou atualizar informações cadastradas.**
+
+**Critérios de aceitação:**
+
+* A edição só está disponível para alimentos **pertencentes à conta autenticada** (RN17).
+* O usuário poderá editar nome.
+* O usuário poderá editar categoria.
+* O usuário poderá editar a validade original.
+* Para alimentos abertos, o usuário poderá editar a data de abertura.
+* Para alimentos abertos, o usuário poderá editar o prazo pós-abertura.
+* Datas de abertura não poderão ser futuras.
+* A quantidade poderá ser alterada apenas para corrigir erros de cadastro.
+* A quantidade não poderá ser alterada diretamente depois que existir movimentação.
+* O estado não poderá ser alterado de Aberto para Fechado.
+* Alterações que afetem a validade deverão recalcular a data limite.
+* A situação da validade deverá ser atualizada após alterações relevantes.
+* O histórico deverá ser preservado.
+* O sistema não deverá fundir automaticamente o alimento com outro grupo existente.
+* As mesmas validações aplicadas ao cadastro (RI01–RI04) devem ser reaplicadas na edição — por exemplo, não é permitido salvar uma edição com nome vazio ou sem data de validade.
+
 **Prioridade:** Should Have
 
-**HU13 — Ordenar Alimentos**
-Como usuário, quero escolher um critério de ordenação alternativo (por nome ou por categoria), além da ordenação padrão por urgência, para visualizar minha lista da forma que fizer mais sentido no momento.
-*Critérios:* a ordenação padrão continua sendo por urgência (RN11); o usuário pode alternar para ordem alfabética por nome ou agrupamento por categoria; a alteração vale apenas para a visualização atual, sem persistir entre sessões. *(Funcionalidade nova nesta reestruturação — comportamento de persistência sujeito a validação.)*
+---
+
+### HU09 — Remover alimento — [Issue #9](https://github.com/jessicapsk/Valimenta/issues/9)
+
+**Como usuário, quero remover um alimento que cadastrei por engano, para corrigir o erro sem deixar um registro incorreto no meu controle.**
+
+**Critérios de aceitação:**
+
+* A remoção só está disponível para alimentos **pertencentes à conta autenticada** (RN17).
+* A remoção só está disponível quando o grupo não possuir nenhuma movimentação de consumo ou descarte associada (RN20) — cobre o cenário de erro de cadastro, não o encerramento normal do ciclo de vida do alimento.
+* Quando já existir ao menos uma movimentação associada ao grupo, o sistema não deverá oferecer a opção de remoção diretamente; a quantidade restante deve ser zerada por meio de consumo/descarte (HU14).
+* O sistema deverá solicitar confirmação antes da remoção.
+* O cancelamento da operação não deverá modificar o alimento.
+* Após a confirmação, o alimento deverá deixar de aparecer na lista de alimentos ativos.
+* A remoção não afeta o histórico de outros grupos do mesmo alimento (RN06) que não estejam sendo removidos.
+
+**Prioridade:** Should Have
+
+---
+
+## Épico 2 — Consulta e Localização de Alimentos (quadro: *Painel de controle e consultas*, [Issue #19](https://github.com/jessicapsk/Valimenta/issues/19))
+
+### HU10 — Visualizar alimentos por prioridade de validade — [Issue #10](https://github.com/jessicapsk/Valimenta/issues/10)
+
+**Como usuário, quero visualizar meus alimentos organizados pela proximidade do vencimento, para saber quais alimentos devo verificar primeiro.**
+
+**Critérios de aceitação:**
+
+* A lista deverá apresentar os alimentos ativos da conta.
+* Os alimentos deverão ser ordenados de acordo com RN11.
+* A situação da validade deverá ser apresentada de forma textual e/ou por ícone.
+* A identificação não deverá depender exclusivamente de cores.
+* Alimentos dentro do período de alerta deverão possuir sinalização adicional.
+* Alimentos vencidos deverão continuar visíveis enquanto houver unidades ativas.
+* A situação deverá ser atualizada automaticamente conforme a passagem dos dias.
+* Caso não existam alimentos cadastrados, o sistema deverá apresentar uma mensagem indicando que a lista está vazia, distinta de uma mensagem de erro do sistema.
+
+**Prioridade:** Must Have
+
+---
+
+### HU11 — Filtrar por estado — [Issue #11](https://github.com/jessicapsk/Valimenta/issues/11)
+
+**Como usuário, quero filtrar meus alimentos pelo estado, para visualizar apenas alimentos abertos ou fechados quando necessário.**
+
+**Critérios de aceitação:**
+
+* O usuário deverá poder selecionar: Todos, Aberto ou Fechado.
+* O sistema deverá apresentar somente os alimentos correspondentes ao filtro.
+* A ordenação por validade deverá ser preservada.
+* Caso nenhum alimento corresponda ao filtro, o sistema deverá apresentar uma mensagem indicando que não há alimentos com o estado selecionado, distinta de uma mensagem de erro do sistema.
+
+**Prioridade:** Should Have
+
+---
+
+### HU12 — Pesquisar por nome — [Issue #12](https://github.com/jessicapsk/Valimenta/issues/12)
+
+**Como usuário, quero pesquisar alimentos pelo nome, para encontrar rapidamente o item que estou procurando.**
+
+**Critérios de aceitação:**
+
+* A pesquisa deverá permitir correspondência parcial.
+* A pesquisa não deverá diferenciar letras maiúsculas e minúsculas.
+* Somente alimentos da conta autenticada deverão ser pesquisados.
+* A pesquisa poderá ser combinada com filtros de estado e categoria.
+* Caso nenhum resultado seja encontrado, o sistema deverá apresentar uma mensagem indicando que a busca não encontrou correspondências, distinta de uma mensagem de erro do sistema.
+
+**Prioridade:** Should Have
+
+---
+
+### HU13 — Filtrar por categoria — [Issue #13](https://github.com/jessicapsk/Valimenta/issues/13)
+
+**Como usuário, quero filtrar meus alimentos por categoria, para encontrar mais facilmente os itens de um determinado tipo.**
+
+**Critérios de aceitação:**
+
+* O sistema deverá apresentar as categorias disponíveis.
+* O usuário poderá selecionar uma categoria.
+* O usuário deverá possuir uma opção para visualizar todas as categorias.
+* O filtro poderá ser combinado com pesquisa e filtro de estado.
+* Caso nenhum resultado seja encontrado, o sistema deverá apresentar uma mensagem indicando que nenhum alimento pertence à categoria selecionada, distinta de uma mensagem de erro do sistema.
+
 **Prioridade:** Could Have
 
 ---
 
-### Épico 4: Baixas, Histórico e Indicadores
+## Épico 3 — Consumo e Descarte (quadro: *Baixas, histórico e indicadores*, [Issue #20](https://github.com/jessicapsk/Valimenta/issues/20))
 
-**HU14 — Registrar Consumo / Descarte**
-Como usuário, quero registrar o consumo ou descarte de um alimento, para manter minha quantidade atualizada e rastrear o destino dos alimentos.
-*Critérios:* disponível só para alimentos da própria conta (RN17); quantidade afetada entre 1 e a disponível (RI03/RI04); consumo sem motivo obrigatório; descarte exige motivo (RN09), com sugestão automática de "Vencimento" quando aplicável; gera uma movimentação com snapshot de nome/categoria (RN21); quantidade restante atualizada; ao chegar a zero, o alimento some da lista de ativos (RN07/RN08); redireciona o que RN15/RN20 impedem de ser feito por edição ou remoção direta.
+### HU14 — Registrar consumo ou descarte — [Issue #14](https://github.com/jessicapsk/Valimenta/issues/14)
+
+**Como usuário, quero registrar o consumo ou descarte de um alimento, para manter meu controle de quantidade atualizado e registrar o destino dos alimentos.**
+
+**Critérios de aceitação:**
+
+* A operação só está disponível para alimentos **pertencentes à conta autenticada** (RN17).
+* O usuário deverá selecionar consumo ou descarte.
+* O usuário deverá informar a quantidade afetada.
+* A quantidade deverá ser maior ou igual a 1.
+* A quantidade não poderá ser superior à quantidade disponível.
+* O usuário poderá registrar parte ou toda a quantidade disponível.
+* Para consumo, não será obrigatório informar motivo.
+* Para descarte, o motivo deverá ser informado.
+* Os motivos de descarte deverão seguir RN09.
+* Quando o motivo for "Outro", deverá ser solicitada uma descrição.
+* Para alimentos vencidos, o sistema deverá sugerir o motivo "Vencimento".
+* O usuário poderá confirmar outro motivo quando aplicável.
+* A operação deverá gerar uma movimentação.
+* A movimentação deverá registrar alimento, tipo, quantidade e data/hora.
+* Em caso de descarte, o motivo também deverá ser registrado.
+* A quantidade restante deverá ser atualizada.
+* Quando a quantidade restante chegar a zero, o alimento deverá deixar de aparecer na lista de ativos.
+
 **Prioridade:** Must Have
 
-**HU15 — Consultar Histórico de Movimentações**
-Como usuário, quero consultar meu histórico de consumo e descarte, para acompanhar o que aconteceu com os alimentos registrados.
-*Critérios:* mostra apenas movimentações da própria conta (RN17); cada item exibe alimento, tipo, quantidade, data/hora e motivo (RN09), sempre com o nome/categoria do momento da movimentação, não o atual (RN21); somente leitura (RN20); filtrável por período; sem registros no período, mensagem própria distinta de erro.
-**Prioridade:** Should Have
+---
 
-**HU16 — Visualizar Indicadores de Desperdício**
-Como usuário, quero visualizar o que descartei e por quê, para identificar padrões e reduzir meu desperdício.
-*Critérios:* considera apenas descartes; agrupável por motivo (RN09) e por categoria — usando a categoria registrada no momento da movimentação, não a atual do alimento (RN21); descartes por vencimento identificáveis separadamente; filtrável por período; restrito à própria conta (RN17); sem descartes no período, mensagem própria distinta de erro.
+## Épico 4 — Histórico e Análise (quadro: *Baixas, histórico e indicadores*, [Issue #20](https://github.com/jessicapsk/Valimenta/issues/20))
+
+### HU15 — Consultar histórico — [Issue #15](https://github.com/jessicapsk/Valimenta/issues/15)
+
+**Como usuário, quero consultar o histórico de consumo e descarte, para acompanhar o que aconteceu com os alimentos que registrei.**
+
+**Critérios de aceitação:**
+
+* O sistema deverá apresentar somente movimentações pertencentes à conta autenticada.
+* Cada movimentação deverá apresentar: alimento, tipo, quantidade, data e hora, e motivo (quando for descarte).
+* O usuário poderá filtrar as movimentações por período.
+* O histórico deverá ser somente para consulta.
+* O usuário não poderá editar movimentações.
+* O usuário não poderá excluir movimentações.
+* Caso não existam movimentações no período selecionado, o sistema deverá apresentar uma mensagem indicando ausência de registros naquele período, distinta de uma mensagem de erro do sistema.
+
 **Prioridade:** Could Have
 
 ---
 
-## 8. Requisitos Não Funcionais (RNFs)
+### HU16 — Visualizar desperdício — [Issue #16](https://github.com/jessicapsk/Valimenta/issues/16)
 
-**RNF01 — Segurança e Criptografia**
-HTTPS obrigatório; senhas armazenadas com hash seguro, nunca em texto plano; validação de autorização feita no backend, não apenas na interface.
+**Como usuário, quero visualizar os alimentos que descartei e seus motivos, para identificar quanto estou desperdiçando e entender as principais causas.**
 
-**RNF02 — Persistência em Nuvem**
-Os dados permanecem armazenados após o encerramento da sessão e ficam disponíveis a partir de qualquer navegador em que o usuário faça login.
+**Critérios de aceitação:**
 
-**RNF03 — Desempenho do Dashboard**
-Para até 200 alimentos ativos por conta, a listagem, filtragem, pesquisa e ordenação do painel devem responder em até **2 segundos** em condições normais de uso.
+* A funcionalidade deverá considerar somente movimentações de descarte.
+* O sistema deverá apresentar as quantidades descartadas.
+* Os descartes deverão poder ser agrupados por motivo.
+* O usuário poderá filtrar os dados por período.
+* Descartes por vencimento deverão poder ser identificados separadamente.
+* Os dados deverão considerar somente a conta autenticada.
+* Caso não existam descartes no período selecionado, o sistema deverá apresentar uma mensagem indicando ausência de descartes naquele período, distinta de uma mensagem de erro do sistema.
 
-**RNF04 — Responsividade**
-Utilizável em telas a partir de **360px** de largura até resoluções de desktop, sem quebra de layout.
-
-**RNF05 — Tolerância a Falhas em Transações**
-Se a conexão cair durante uma operação de escrita (cadastro, edição, abertura ou baixa), o sistema não grava registro parcial nem duplicado — a operação é concluída por inteiro ou não é gravada.
-
-**RNF06 — Privacidade de Dados**
-O isolamento entre contas (RN17) é garantido no backend, não apenas na interface — nenhuma consulta ou operação pode expor ou alterar dados de outra conta, mesmo em caso de falha de outra camada do sistema.
-
-**RNF07 — Acessibilidade** *(mantida do escopo original — não fazia parte da lista-modelo de 6 itens, mas é uma exigência já validada, mantida aqui para não regredir o que foi definido)*
-Nenhuma informação relevante depende exclusivamente de cor; a situação de validade sempre tem alternativa textual e/ou por ícone.
+**Prioridade:** Could Have
 
 ---
 
-## 9. Matriz de Priorização (MoSCoW)
+# 8. Requisitos Não Funcionais
 
-| Prioridade | HUs | Descrição |
-|---|---|---|
-| **Must Have** | HU01, HU02, HU04, HU05, HU06, HU10, HU14 | Escopo principal do MVP |
-| **Should Have** | HU03, HU07, HU08, HU09, HU11, HU12, HU15 | Funcionalidades de suporte |
-| **Could Have** | HU13, HU16 | Recursos avançados |
-| **Won't Have** |
+## RNF01 — Persistência
+
+Os dados cadastrados deverão permanecer armazenados após o encerramento da sessão e poderão ser recuperados posteriormente pelo usuário autenticado.
+
+## RNF02 — Desempenho
+
+Para até 200 alimentos ativos, operações de listagem, filtragem e pesquisa deverão apresentar resultado em até 1 segundo em condições normais de uso.
+
+## RNF03 — Acessibilidade
+
+As funcionalidades principais deverão ser utilizáveis sem depender exclusivamente de distinção por cores.
+
+Informações importantes deverão possuir alternativas textuais e/ou visuais.
+
+## RNF04 — Responsividade
+
+A aplicação deverá ser utilizável em telas com largura a partir de 360px (smartphones comuns) até resoluções de desktop, sem quebra de layout ou perda de acesso a funcionalidades.
+
+## RNF05 — Confiabilidade
+
+Se a conexão do usuário cair durante uma operação de escrita (cadastro, edição, abertura ou baixa), o sistema não deverá gravar um registro parcial nem duplicado — a operação é concluída por inteiro ou não é gravada.
+
+## RNF06 — Segurança
+
+O sistema deverá:
+
+* utilizar HTTPS;
+* armazenar senhas utilizando mecanismos seguros de hash;
+* impedir acesso de uma conta aos dados de outra;
+* validar operações no backend;
+* impedir acesso não autorizado a funcionalidades protegidas.
 
 ---
 
-## 10. Matriz de Rastreabilidade
+# 9. Definition of Ready — DoR
 
-| História de Usuário | Regras de Negócio / Integridade Vinculadas |
-|---|---|
-| **HU01** — Criar Conta | RN17, RN18, RN19 |
-| **HU02** — Login | RN17 |
-| **HU03** — Recuperar Senha | RN19 |
-| **HU04** — Logout | RN17 |
-| **HU05** — Cadastrar Alimento | RN01, RN02, RN03, RN05, RN06, RN07, RN10, RN13, RN14, RN17, RI01, RI02, RI03, RI04 |
-| **HU06** — Marcar como Aberto | RN02, RN03, RN05, RN07, RN08, RN10, RN14, RN17, RI03 |
-| **HU07** — Editar Alimento | RN01, RN02, RN03, RN04, RN05, RN06, RN10, RN17, RN20, RN21, RI01, RI02 |
-| **HU08** — Editar Quantidade | RN15, RN17, RI03, RI04 |
-| **HU09** — Remover Alimento | RN06, RN17, RN20 |
-| **HU10** — Dashboard | RN04, RN11, RN12, RN16, RN17 |
-| **HU11** — Pesquisar Alimentos | RN06, RN17 |
-| **HU12** — Filtrar por Estado e Categoria | RN05, RN13, RN17 |
-| **HU13** — Ordenar Alimentos | RN11, RN17 |
-| **HU14** — Registrar Consumo/Descarte | RN07, RN08, RN09, RN15, RN17, RN20, RN21, RI03, RI04 |
-| **HU15** — Consultar Histórico | RN09, RN17, RN20, RN21 |
-| **HU16** — Visualizar Desperdício | RN09, RN17, RN21 |
+Uma User Story estará pronta para desenvolvimento quando:
+
+* possuir objetivo e valor claramente definidos;
+* possuir ator identificado;
+* possuir escopo compreensível;
+* possuir critérios de aceitação claros e testáveis;
+* possuir regras de negócio aplicáveis identificadas;
+* possuir entradas e saídas relevantes definidas;
+* não possuir ambiguidades funcionais críticas;
+* possuir dependências conhecidas e suficientemente tratadas;
+* possuir tamanho adequado para planejamento;
+* possuir requisitos não funcionais relevantes identificados;
+* estiver suficientemente refinada para permitir estimativa e planejamento técnico.
+
+A DoR é uma definição geral do projeto e não precisa ser repetida integralmente em cada User Story.
+
+Uma história pode possuir dependências de outras histórias, desde que essas dependências sejam conhecidas e estejam suficientemente especificadas para o planejamento.
 
 ---
 
-## 11. Matriz de Riscos
+# 10. Definition of Done — DoD
 
-| ID | Risco | Impacto | Mitigação |
-|---|---|---|---|
-| **11.3** | Vazamento de dados entre contas de usuários | Crítico | Aplicação rigorosa da RN17 no backend (RNF06) |
-| **11.5** | Valores de prazo por categoria (RN14) incorretos | Médio | Valores atuais são suposição; validar com dados reais antes do lançamento |
-| **11.7** | Sessão sem expiração definida (HU02) | Médio | Definir tempo de expiração e comportamento por inatividade |
-| **11.8** | Indisponibilidade do serviço de e-mail (HU03) | Alto | Escolher provedor de e-mail transacional confiável antes de habilitar HU03 |
+Uma User Story será considerada concluída quando:
+
+* todos os critérios de aceitação forem atendidos;
+* as regras de negócio aplicáveis estiverem implementadas;
+* as validações necessárias estiverem implementadas;
+* os testes definidos para a funcionalidade forem aprovados;
+* a funcionalidade estiver integrada ao sistema;
+* não existirem defeitos bloqueadores conhecidos;
+* os requisitos não funcionais aplicáveis forem atendidos;
+* a implementação tiver sido revisada;
+* o comportamento final estiver de acordo com o requisito especificado.
+
+---
+
+# 11. Matriz de Rastreabilidade
+
+| User Story                        | Requisitos relacionados                                                            |
+| ---------------------------------- | ------------------------------------------------------------------------------------ |
+| HU01 — Criar conta                 | RN17, RN18, RN19, RNF06                                                             |
+| HU02 — Fazer login                 | RN17, RNF06                                                                          |
+| HU03 — Recuperar senha             | RN19, RNF06                                                                          |
+| HU04 — Fazer logout                | RNF06                                                                                |
+| HU05 — Cadastrar alimento          | RN01, RN02, RN03, RN05, RN06, RN07, RN10, RN13, RN14, RN17, RI01, RI02, RI03, RI04 |
+| HU06 — Registrar abertura          | RN02, RN03, RN05, RN07, RN08, RN10, RN14, RN17, RI03                               |
+| HU07 — Corrigir data de abertura   | RN02, RN03, RN05, RN10, RN17, RN20                                                  |
+| HU08 — Editar alimento             | RN01, RN02, RN03, RN05, RN06, RN15, RN17, RN20, RN21, RI01, RI02, RI03, RI04       |
+| HU09 — Remover alimento            | RN06, RN17, RN20                                                                     |
+| HU10 — Visualizar alimentos        | RN04, RN11, RN12, RN16, RN17                                                        |
+| HU11 — Filtrar por estado          | RN05, RN17                                                                           |
+| HU12 — Pesquisar por nome          | RN06, RN17                                                                           |
+| HU13 — Filtrar por categoria       | RN13, RN17                                                                           |
+| HU14 — Registrar consumo/descarte  | RN07, RN08, RN09, RN15, RN17, RN20, RI03                                            |
+| HU15 — Consultar histórico         | RN09, RN17, RN20                                                                     |
+| HU16 — Visualizar desperdício      | RN09, RN17                                                                           |
+
+---
+
+# 12. Priorização — MoSCoW
+
+## Must Have
+
+* HU01 — Criar conta
+* HU02 — Fazer login
+* HU05 — Cadastrar alimento
+* HU06 — Registrar abertura
+* HU10 — Visualizar alimentos por prioridade de validade
+* HU14 — Registrar consumo ou descarte
+
+## Should Have
+
+* HU03 — Recuperar senha
+* HU04 — Fazer logout
+* HU07 — Corrigir data de abertura
+* HU08 — Editar alimento
+* HU09 — Remover alimento
+* HU11 — Filtrar por estado
+* HU12 — Pesquisar por nome
+
+## Could Have
+
+* HU13 — Filtrar por categoria
+* HU15 — Consultar histórico
+* HU16 — Visualizar desperdício
+
+## Won't Have — versão atual
+
+Funcionalidades fora do escopo atual:
+
+* login social;
+* verificação de e-mail;
+* autenticação em dois fatores;
+* notificações por e-mail;
+* notificações por SMS;
+* notificações push;
+* compartilhamento entre contas;
+* cadastro por peso ou volume;
+* edição/exclusão do histórico;
+* exportação manual.
+
+---
+
+# 13. Decisões de Engenharia de Requisitos
+
+As seguintes decisões foram adotadas durante o refinamento:
+
+1. As User Stories devem representar valor para o usuário, e não regras técnicas ou características de arquitetura.
+2. Informações como isolamento de dados entre contas permanecem como regras de negócio/requisitos de segurança, não como valor da User Story.
+3. A DoR é definida de maneira geral, evitando sua repetição em todas as HUs.
+4. A existência de dependência entre histórias não significa automaticamente que uma história não possa estar pronta para desenvolvimento.
+5. A funcionalidade de visualização de validade e alertas foi consolidada na HU10, evitando duplicidade.
+6. A abertura parcial de unidades deve ser explicitamente representada na HU06.
+7. A quantidade afetada por consumo ou descarte deve ser explicitamente informada na HU14.
+8. Consumo e descarte devem gerar movimentações no histórico.
+9. Remover um alimento só é permitido quando ele ainda não possui movimentação registrada (correção de erro de cadastro); um alimento com histórico de consumo/descarte deve ser zerado via baixa (HU14), nunca removido diretamente, para que o motivo da baixa não se perca.
+10. A situação "Vencido" é diferente do alerta de alimentos próximos do vencimento.
+11. A validade original permanece válida durante a data impressa na embalagem, sendo considerada vencida somente no dia seguinte.
+12. Quando houver validade original e prazo pós-abertura, a menor data será utilizada como data limite efetiva.
+13. A data local do dispositivo/navegador será utilizada como referência para os cálculos de validade.
+14. As alterações nos dados de um alimento não devem causar fusão automática com outros grupos.
+15. O prazo padrão por categoria é definido pelo sistema (não configurável por conta); o usuário pode apenas sobrescrever a sugestão pontualmente para um alimento específico, no momento do cadastro/abertura.
