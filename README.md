@@ -200,7 +200,7 @@ Toda movimentação registra uma cópia do nome e da categoria do alimento no mo
 
 ---
 
-## 6. Definição de Pronto (DoR e DoD)
+## 6. Definição de Pronto (DoR)
 
 ### 6.1 Definition of Ready (DoR)
 
