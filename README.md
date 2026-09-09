@@ -3,7 +3,8 @@
 
 **Tipo:** Documento de Requisitos
 **Abordagem:** Engenharia de Requisitos
-**Quadro de acompanhamento (GitHub Projects/Issues):** [github.com/jessicapsk/Valimenta](https://github.com/jessicapsk/Valimenta)
+**Quadro de acompanhamento (GitHub Projects/Issues):** [github.com/jessicapsk/Valimenta]([https://github.com/jessicapsk/Valimenta](https://github.com/users/jessicapsk/projects/1))
+**Protótipo:** https://gig-flame-34715391.figma.site/
 
 ---
 
