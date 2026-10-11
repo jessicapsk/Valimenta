@@ -18,7 +18,7 @@ O domínio da aplicação apresenta drivers de qualidade e requisitos funcionais
 3. **Volumetria Doméstica:** A carga estimada por usuário é de até 200 alimentos ativos, com transações simultâneas de baixa e consulta pontuais, tornando a alta escalabilidade distribuída um requisito secundário neste estágio.
 4. **Viabilidade Operacional e de Entrega:** A equipe necessita de um ciclo ágil de feedback, facilidade de depuração em ambiente local e configuração direta de pipelines de integração contínua (CI/CD).
 
-A equipe explorou duas alternativas arquiteturais geradas com auxílio de IA (conforme registrado em `exploracao-ia.md`):
+A equipe explorou duas alternativas arquiteturais geradas com auxílio de IA (conforme registrado em `elicitacao-ia.md`):
 * **Proposta 1:** Monólito Modular em Camadas (*Layered Modular Monolith*) com PostgreSQL.
 * **Proposta 2:** Microsserviços Orientados a Eventos (*Event-Driven Microservices*) com mensageria assíncrona.
 

@@ -36,13 +36,14 @@ Os principais atributos de qualidade identificados a partir das User Stories e R
 
 Os artefatos desta etapa estão divididos nos seguintes arquivos de detalhamento técnico:
 
-* 📄 **[1. Elicitação Arquitetural com IA](exploracao-ia.md):** Registro transparente do prompt utilizado, das duas alternativas arquiteturais geradas pela IA (Monólito Modular vs. Microsserviços Orientados a Eventos) e da análise comparativa de atributos.
-* 📄 **[2. ADR 01 — Adoção do Monólito Modular](adr-01-monolito-modular.md):** Registro de Decisão Arquitetural formal contendo o contexto, decisão fundamentada, alternativas descartadas e trade-offs assumidos.
+* 📄 **[1. Elicitação Arquitetural com IA](elicitacao-ia.md):** Registro transparente do prompt utilizado, das duas alternativas arquiteturais geradas pela IA (Monólito Modular vs. Microsserviços Orientados a Eventos) e da análise comparativa de atributos.
+* 📄 **[2. Decisão Arquitetural — Adoção do Monólito Modular](escolha-arquitetural.md):** Registro de Decisão Arquitetural formal contendo o contexto, decisão fundamentada, alternativas descartadas e trade-offs assumidos.
 * 📄 **[3. Projeto Arquitetural — Modelo C4](modelo-c4.md):** Diagramas e especificações técnicas nos 4 níveis de abstração:
   * **Nível 1 (Contexto):** Fronteira do sistema Valimenta com usuários e serviços externos.
   * **Nível 2 (Contêineres):** Tecnologias do Frontend SPA, Backend e Banco de Dados Relacional.
   * **Nível 3 (Componentes):** Arquitetura interna do módulo de gestão de estoque e motor de cálculo.
   * **Nível 4 (Código):** Diagrama estrutural das classes e entidades de domínio.
+* 📄 **[4. Roteiro de Apresentação da Arquitetura](apresentacao-arquitetura.md):** Versão resumida e pronta para uso em aula, defesa ou reunião de revisão.
 
 ---
 
@@ -55,3 +56,19 @@ Os artefatos desta etapa estão divididos nos seguintes arquivos de detalhamento
 | **RN01–RN04 (Motor de Validade)** | Criação de um componente puro de domínio (`ValidadeCalculatorEngine`) sem acoplamento a frameworks. |
 | **RN20 / RN21 (Snapshots Históricos)** | Tabela de movimentação com campos imutáveis independentes da entidade principal de alimentos. |
 | **US17 (Código de Barras - Won't Have)** | Isolação de integrações com APIs externas de catálogo de terceiros fora do pipeline de produção do MVP. |
+
+---
+
+## 5. Resumo Executivo para Apresentação
+
+A arquitetura do Valimenta foi definida como um monólito modular em camadas, com frontend SPA em React, backend em uma única aplicação web e banco de dados relacional PostgreSQL. Essa decisão foi tomada para equilibrar simplicidade operacional, consistência transacional, isolamento por conta e velocidade de entrega no contexto do MVP.
+
+A escolha se justifica pelo fato de que as regras de negócio mais críticas, como baixa de estoque com histórico imutável, divisão parcial de lote e isolamento lógico entre contas, exigem transações ACID. O uso de um único banco relacional resolve esse requisito de maneira mais direta e previsível do que uma arquitetura distribuída, que introduziria complexidade excessiva e risco operacional desproporcional.
+
+O sistema foi organizado em módulos funcionais: autenticação, estoque e validade, e baixas/análise. O módulo de validade é apoiado por um componente puro de domínio, o `ValidadeCalculatorEngine`, responsável por determinar a data limite efetiva e a situação de vencimento. Isso reduz acoplamento com frameworks e facilita a criação de testes determinísticos.
+
+Em síntese, a arquitetura atende ao escopo do projeto porque oferece uma base simples, segura e fácil de evoluir, sem comprometer desempenho, confiabilidade e organização do código para a entrega do MVP.
+
+### Frase de fechamento para apresentação
+
+> O Valimenta adota uma arquitetura de monólito modular com PostgreSQL porque combina simplicidade, consistência, isolamento de dados e entregabilidade, sendo a opção mais adequada para um MVP com regras de negócio sensíveis e equipe enxuta.
