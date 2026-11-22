@@ -38,9 +38,9 @@ A matriz estabelece o vínculo bidirecional entre cada User Story e as Regras de
 | **US02** — Fazer login | RN17 | — | RNF06 |
 | **US03** — Recuperar senha | RN18, RN19 | — | RNF06 |
 | **US04** — Fazer logout | RN17 | — | RNF06 |
-| **US05** — Cadastrar alimento | RN01, RN02, RN03, RN05, RN06, RN07, RN10, RN13, RN14, RN17 | RI01, RI02, RI03, RI04 | RNF01, RNF04, RNF05, RNF06 |
-| **US06** — Registrar abertura | RN02, RN03, RN05, RN07, RN08, RN10, RN14, RN17 | RI03 | RNF01, RNF04, RNF05, RNF06 |
-| **US07** — Corrigir data de abertura | RN02, RN03, RN04, RN05, RN10, RN17, RN20 | — | RNF01, RNF05, RNF06 |
+| **US05** — Cadastrar alimento | RN01, RN02, RN03, RN05, RN06, RN07, RN10, RN13, RN14, RN16, RN17 | RI01, RI02, RI03, RI04 | RNF01, RNF04, RNF05, RNF06 |
+| **US06** — Registrar abertura | RN02, RN03, RN05, RN07, RN08, RN10, RN14, RN16, RN17 | RI03 | RNF01, RNF04, RNF05, RNF06 |
+| **US07** — Corrigir data de abertura | RN02, RN03, RN04, RN05, RN10, RN16, RN17, RN20 | — | RNF01, RNF05, RNF06 |
 | **US08** — Editar alimento | RN01, RN02, RN03, RN05, RN06, RN10, RN15, RN17, RN20, RN21 | RI01, RI02, RI03, RI04 | RNF01, RNF04, RNF05, RNF06 |
 | **US09** — Remover alimento | RN06, RN17, RN20 | — | RNF01, RNF05, RNF06 |
 | **US10** — Visualizar alimentos por validade | RN04, RN11, RN12, RN16, RN17 | — | RNF02, RNF03, RNF04, RNF06 |
@@ -112,7 +112,7 @@ Durante o processo de elicitação, análise e refinamento das histórias, as se
    Estabeleceu-se uma fronteira estrita entre a remoção (US09) e a baixa (US14). A remoção física de um lote é autorizada exclusivamente enquanto não houver movimentações, servindo para sanar enganos imediatos de digitação. Uma vez que o item possui movimentação, seu encerramento deve ocorrer obrigatoriamente por baixa (consumo/descarte), preservando a integridade das métricas históricas de desperdício (RN20).
 
 5. **Critério Temporal e Vigência de Vencimento:**  
-   Adotou-se a convenção de que o alimento permanece plenamente válido até o último minuto da data impressa na embalagem, sendo considerado vencido apenas a partir do primeiro instante do dia seguinte (RN01).
+   Adotou-se a convenção de que o alimento permanece plenamente válido até o último minuto da data impressa na embalagem, sendo considerado vencido apenas a partir do primeiro instante do dia seguinte (RN01). A referência temporal para todos os cálculos e comparações é obtida no servidor no momento da requisição, tratando datas como dias puros (`YYYY-MM-DD`) independentemente do relógio ou fuso do dispositivo do cliente (RN16).
 
 6. **Resolução Determinística da Concorrência de Prazos:**  
    Para eliminar ambiguidades quando um produto aberto possui validade original e prazo pós-abertura conflitantes, determinou-se matematicamente que a data limite efetiva assume sempre o menor valor entre as duas datas projetadas (RN03).

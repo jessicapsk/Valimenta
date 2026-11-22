@@ -182,16 +182,16 @@
   * **E** grava o alimento sem data de abertura associado à conta autenticada (RN17).
 * **Cenário 2: Cadastro de alimento já aberto com cálculo pós-abertura (RN02, RN03, RN14)**
   * **Dado** que o usuário preenche a validade original para daqui a 10 dias e seleciona a categoria *"Carne"* (sugestão de 2 dias),
-  * **Quando** marca a opção *"Já está aberto"*, informa a data de abertura como a data atual e confirma o prazo sugerido de 2 dias,
-  * **Então** o sistema calcula a data limite pós-abertura (data atual + 2 dias),
+  * **Quando** marca a opção *"Já está aberto"*, informa a data de abertura igual à data de referência do sistema e confirma o prazo sugerido de 2 dias,
+  * **Então** o sistema calcula a data limite pós-abertura (data de referência do sistema + 2 dias),
   * **E** define a data limite efetiva como a menor data entre a original e a pós-abertura (RN03),
   * **E** salva o item no estado *"Aberto"*.
 * **Cenário 3: Tentativa de cadastro com data de abertura futura (RN10)**
   * **Dado** que o usuário marca o alimento como aberto,
-  * **Quando** preenche uma data de abertura posterior à data atual local,
+  * **Quando** preenche uma data de abertura posterior à data de referência do sistema (RN16),
   * **Então** o sistema impede o salvamento e exibe o aviso: *"A data de abertura não pode ser uma data futura."*.
 * **Cenário 4: Cadastro de alimento com validade já vencida**
-  * **Dado** que o usuário informa uma data de validade original anterior à data atual,
+  * **Dado** que o usuário informa uma data de validade original anterior à data de referência do sistema,
   * **Quando** tenta submeter o formulário,
   * **Então** o sistema exibe um alerta de confirmação: *"A validade informada já expirou. Deseja cadastrar o item mesmo assim?"*,
   * **E** só conclui a gravação se o usuário confirmar explicitamente.
@@ -222,7 +222,7 @@
 #### Critérios de Aceitação (BDD / Gherkin)
 * **Cenário 1: Abertura total de unidades (Caminho Feliz)**
   * **Dado** que o usuário possui um grupo com 2 unidades fechadas de *"Molho de Tomate"*,
-  * **Quando** aciona a ação de registrar abertura, informa quantidade 2, data de abertura atual e confirma o prazo sugerido,
+  * **Quando** aciona a ação de registrar abertura, informa quantidade 2, data de abertura igual à data de referência do sistema e confirma o prazo sugerido,
   * **Então** o sistema calcula e apresenta o resumo da nova data limite antes da confirmação,
   * **E** após a confirmação, atualiza o grupo para o estado *"Aberto"*, sem permitir reversão para *"Fechado"*.
 * **Cenário 2: Abertura parcial com divisão de grupo/lote (RN08)**
@@ -268,7 +268,7 @@
   * **E** preserva integralmente qualquer movimentação de baixa preexistente no histórico (RN20).
 * **Cenário 2: Rejeição de data futura (RN10)**
   * **Dado** que o usuário está corrigindo a abertura,
-  * **Quando** informa uma data posterior à data atual do sistema,
+  * **Quando** informa uma data posterior à data de referência do sistema (RN16),
   * **Então** a operação é impedida exibindo a mensagem: *"A data de abertura não pode ser uma data futura."*.
 * **Cenário 3: Indisponibilidade para itens fechados (RN05)**
   * **Dado** que o alimento encontra-se no estado *"Fechado"*,

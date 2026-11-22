@@ -30,7 +30,7 @@
 * **Ambiente Web em Nuvem:** A aplicação será disponibilizada via web com persistência em banco de dados em nuvem.
 * **Isolamento Multiusuário (*Multi-tenant* Lógico):** Cada usuário possuirá sua própria conta; os dados de alimentos, lotes e histórico são completamente isolados entre usuários.
 * **Autenticação Padrão:** O acesso será realizado por meio de e-mail e senha.
-* **Referência Temporal Local:** Todos os cálculos de vigência de validade e mudanças automáticas de situação baseiam-se na data local do navegador/dispositivo do usuário (RN16).
+* **Referência Temporal do Servidor:** Todos os cálculos de vigência de validade, ordenação e classificação de situação baseiam-se na data de referência do sistema obtida no servidor no momento da requisição, sem depender do relógio ou fuso do dispositivo do usuário (RN16).
 
 ### 2.2 Restrições
 * **Unidades Inteiras:** A quantidade é registrada unicamente em números inteiros ($\ge 1$). Não são suportadas medidas fracionárias, pesagem (kg/g) ou volume (litros/ml).

@@ -25,15 +25,13 @@
 
 #### RN04 — Situação da validade
 * O sistema classifica o alimento comparando a data de referência do sistema (RN16) com a sua data limite efetiva. A situação é calculada a cada consulta e não é persistida no banco:
-| **Vence hoje** | Data de referência rigorosamente igual à data limite (Δt = 0) |
-| **Vencido** | Data de referência posterior à data limite (Δt < 0) |
 
 | Situação | Condição Cronológica |
 | :--- | :--- |
 | **Normal** | Mais de 3 dias restantes para a data limite ($\Delta t > 3 \text{ dias}$) |
 | **Próximo do vencimento** | De 1 a 3 dias restantes para a data limite ($1 \le \Delta t \le 3 \text{ dias}$) |
-| **Vence hoje** | Data atual rigorosamente igual à data limite ($\Delta t = 0$) |
-| **Vencido** | Data atual posterior à data limite ($\Delta t < 0$) |
+| **Vence hoje** | Data de referência rigorosamente igual à data limite ($\Delta t = 0$) |
+| **Vencido** | Data de referência posterior à data limite ($\Delta t < 0$) |
 
 #### RN10 — Data de abertura
 * A data de abertura deve ser menor ou igual à data de referência do sistema (RN16).

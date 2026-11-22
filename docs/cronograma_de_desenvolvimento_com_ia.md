@@ -11,7 +11,7 @@
 Para assegurar previsibilidade e rigor técnico, o planejamento adota premissas conservadoras:
 
 * **Fator de Revisão Humana:** Ferramentas de IA aceleram a geração de boilerplate, migrações e cascas de testes, mas exigem depuração ativa, adequação a regras de negócio e validação arquitetural. Cerca de **30% do esforço de cada ciclo** é reservado para revisão manual, testes de borda e garantia de isolamento entre contas.
-* **Margem de Segurança Explícita (*Buffer/Gordura*):** Cada sprint incorpora de 20% a 25% de margem temporal ao final para mitigar falhas de integração contínua (CI/CD), problemas com fuso horário local e ajustes finos de CSS/responsividade.
+* **Margem de Segurança Explícita (*Buffer/Gordura*):** Cada sprint incorpora de 20% a 25% de margem temporal ao final para mitigar falhas de integração contínua (CI/CD), tratamento de datas de referência no servidor e ajustes finos de CSS/responsividade.
 * **Janela Final de Estabilização:** O último quarto da quarta sprint é dedicado a congelamento de código (*code freeze*), homologação e testes de regressão antes da entrega.
 
 ---
@@ -65,7 +65,7 @@ O ciclo de desenvolvimento do MVP é distribuído em **4 Sprints de 2 semanas ca
 
 | Dias | Atividade Planejada | Apoio de IA | Ponto Crítico / Risco |
 | :---: | :--- | :--- | :--- |
-| **D11–D12** | Implementação de US05 (Cadastro de alimento, validação de campos RI01–RI04 e sugestão de prazos RN14). | Schemas de validação e mock de dados de categorias. | Tratamento de datas com fuso horário local do navegador (RN16). |
+| **D11–D12** | Implementação de US05 (Cadastro de alimento, validação de campos RI01–RI04 e sugestão de prazos RN14). | Schemas de validação e mock de dados de categorias. | Tratamento de datas puras (YYYY-MM-DD) com base na data de referência do servidor (RN16). |
 | **D13–D14** | Implementação da rotina de cálculo determinístico (RN01, RN02, RN03) e transição de estado da US06. | Funções utilitárias de datas com testes unitários. | Resolução da menor data efetiva e bloqueio de data futura (RN10). |
 | **D15–D16** | Implementação de abertura parcial com partição de lotes (RN08) e US14 (Baixa por consumo ou descarte). | Esqueleto de rotinas transacionais no banco de dados. | Falha de integridade: a baixa precisa ser estritamente atômica (RNF05). |
 | **D17–D18** | Telas de cadastro, modal de abertura e modal de baixa com sugestão de motivo de descarte (RN09). | Geração de componentes interativos e modais de confirmação. | Manter formulários limpos, rápidos e acessíveis. |
