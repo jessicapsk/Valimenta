@@ -109,7 +109,7 @@ flowchart TB
         MovementRepo[MovementRepository]
     end
 
-    subgraph DB[(Banco de Dados)]
+    subgraph DB["Banco de Dados"]
         Tables[Tabelas: conta, alimento, categoria, movimentacao]
     end
 
