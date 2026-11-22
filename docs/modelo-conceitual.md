@@ -71,35 +71,36 @@ Não fazem parte do escopo desta release:
 O modelo conceitual descreve as entidades de domínio, seus atributos e suas relações estruturais:
 
 ```text
-+-------------------+            1..* +-------------------+
-|       Conta       | <------------> |      Alimento     |
-+-------------------+ (RN17: Isola)  +-------------------+
-| - id              |                | - id              |
-| - email (RN18)    |                | - conta_id (FK)   |
-| - senha_hash(RN19)|                | - categoria_id(FK)|
-+-------------------+                | - nome (RN06)     |
-                                     | - quantidade      |
-                                     | - estado (RN05)   |
-                                     | - val_original    |
-                                     | - data_abertura   |
-                                     | - prazo_abertura  |
-                                     | - data_limite     |
-                                     +-------------------+
-                                               | 1
-                                               |
-                                               | 0..*
-+-------------------+            1..*          v
-|     Categoria     | <--------------+ +-------------------+
-+-------------------+  (Snapshot:    | |    Movimentacao   |
-| - id              |   RN21)        | +-------------------+
-| - nome (RN13)     |                +-| - id              |
-| - prazo_padrao    |                  | - conta_id (FK)   |
-+-------------------+                  | - alimento_id(FK) |
-                                       | - tipo (Cons/Desc)|
-                                       | - quantidade      |
-                                       | - data_hora       |
-                                       | - motivo_descarte |
-                                       | - descricao_outro |
-                                       | - nome_snapshot   |
-                                       | - categ_snapshot  |
-                                       +-------------------+
++-------------------+ 1        0..* +-------------------+ 0..*        1 +-------------------+
+|       Conta       | <-----------> |      Alimento     | <-----------> |     Categoria     |
++-------------------+ (RN17: Isola) +-------------------+               +-------------------+
+| - id              |               | - id              |               | - id              |
+| - email (RN18)    |               | - conta_id (FK)   |               | - nome (RN13)     |
+| - senha_hash(RN19)|               | - categoria_id(FK)|               | - prazo_padrao    |
++-------------------+               | - nome (RN06)     |               +-------------------+
+                                    | - quantidade      |
+                                    | - estado (RN05)   |
+                                    | - val_original    |
+                                    | - data_abertura   |
+                                    | - prazo_abertura  |
+                                    | - data_limite     |
+                                    +-------------------+
+                                              | 1
+                                              | (Snapshot: RN21)
+                                              | 0..*
+                                              v
+                                    +-------------------+
+                                    |    Movimentacao   |
+                                    +-------------------+
+                                    | - id              |
+                                    | - conta_id (FK)   |
+                                    | - alimento_id(FK) |
+                                    | - tipo (Cons/Desc)|
+                                    | - quantidade      |
+                                    | - data_hora       |
+                                    | - motivo_descarte |
+                                    | - descricao_outro |
+                                    | - nome_snapshot   |
+                                    | - categ_snapshot  |
+                                    +-------------------+
+```

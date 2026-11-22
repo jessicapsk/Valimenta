@@ -53,8 +53,8 @@ A solução é hospedada em nuvem, garantindo isolamento estrito de dados entre 
 A documentação detalhada deste projeto foi dividida em módulos para facilitar a consulta, manutenção e rastreabilidade:
 
 * 📄 **[1. Modelo Conceitual e Escopo](modelo-conceitual.md):** Glossário operacional, premissas, restrições arquiteturais, itens fora de escopo e modelo conceitual de entidades.
-* 📄 **[2. Regras de Negócio e Requisitos de Informação](regras-de-negocio.md):** Catálogo formal das regras de vigência, cálculo de prazos, estados, agrupamentos e integridade (RN01 a RN21 e RI01 a RI04).
+* 📄 **[2. Regras de Negócio e Requisitos de Informação](regras-negocio.md):** Catálogo formal das regras de vigência, cálculo de prazos, estados, agrupamentos e integridade (RN01 a RN21 e RI01 a RI04).
 * 📄 **[3. Catálogo de User Stories](user-stories.md):** Especificação completa das histórias (US01 a US17) estruturadas no padrão INVEST com critérios de aceitação executáveis em BDD (Gherkin).
-* 📄 **[4. Requisitos Não Funcionais](requisitos-não-funcionais):** Critérios de persistência, desempenho, acessibilidade (WCAG), responsividade e segurança (RNF01 a RNF06).
+* 📄 **[4. Requisitos Não Funcionais](requisitos-não-funcionais.md):** Critérios de persistência, desempenho, acessibilidade (WCAG), responsividade e segurança (RNF01 a RNF06).
 * 📄 **[5. Governança, Rastreabilidade e Decisões](governanca-rastreabilidade.md):** Definition of Ready (DoR), Definition of Done (DoD), Matriz de Rastreabilidade cruzada, priorização MoSCoW e registro das decisões de Engenharia de Requisitos.
 * 📄 **[6. Cronograma de Desenvolvimento Acelerado por IA](cronograma_de_desenvolvimento_com_ia.md):** Metodologia de aceleração com ferramentas generativas, papéis humanos de validação e planejamento temporal por iterações.

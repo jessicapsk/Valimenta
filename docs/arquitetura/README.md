@@ -3,7 +3,7 @@
 > **Etapa 2 do Ciclo de Vida:** Projeto Arquitetural e Decisões Técnicas  
 > **Sistema:** Valimenta — Controle Doméstico de Validade de Alimentos  
 > **Artefatos:** Atributos de Qualidade, Elicitação com IA, ADR (Architecture Decision Record) e Modelo C4  
-> **Apresentação de Slides:** [Apresentação de Slides - Projeto Arquitetural (PDF)](./apresentacao-arquitetura.pdf) *(ou link do visualizador)*
+> **Apresentação de Slides:** [Apresentação de Slides - Projeto Arquitetural (PDF)](./slide/Valimenta%20Arquitetura.pdf)
 
 ---
 
@@ -43,7 +43,7 @@ Os artefatos desta etapa estão divididos nos seguintes arquivos de detalhamento
   * **Nível 2 (Contêineres):** Tecnologias do Frontend SPA, Backend e Banco de Dados Relacional.
   * **Nível 3 (Componentes):** Arquitetura interna do módulo de gestão de estoque e motor de cálculo.
   * **Nível 4 (Código):** Diagrama estrutural das classes e entidades de domínio.
-* 📄 **[4. Roteiro de Apresentação da Arquitetura](apresentacao-arquitetura.md):** Versão resumida e pronta para uso em aula, defesa ou reunião de revisão.
+* 📄 **[4. Apresentação de Slides da Arquitetura (PDF)](./slide/Valimenta%20Arquitetura.pdf):** Versão resumida e pronta para uso em aula, defesa ou reunião de revisão.
 
 ---
 

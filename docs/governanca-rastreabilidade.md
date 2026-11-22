@@ -41,7 +41,7 @@ A matriz estabelece o vínculo bidirecional entre cada User Story e as Regras de
 | **US05** — Cadastrar alimento | RN01, RN02, RN03, RN05, RN06, RN07, RN10, RN13, RN14, RN16, RN17 | RI01, RI02, RI03, RI04 | RNF01, RNF04, RNF05, RNF06 |
 | **US06** — Registrar abertura | RN02, RN03, RN05, RN07, RN08, RN10, RN14, RN16, RN17 | RI03 | RNF01, RNF04, RNF05, RNF06 |
 | **US07** — Corrigir data de abertura | RN02, RN03, RN04, RN05, RN10, RN16, RN17, RN20 | — | RNF01, RNF05, RNF06 |
-| **US08** — Editar alimento | RN01, RN02, RN03, RN05, RN06, RN10, RN15, RN17, RN20, RN21 | RI01, RI02, RI03, RI04 | RNF01, RNF04, RNF05, RNF06 |
+| **US08** — Editar alimento | RN01, RN02, RN03, RN04, RN05, RN06, RN10, RN15, RN16, RN17, RN20, RN21 | RI01, RI02, RI03, RI04 | RNF01, RNF04, RNF05, RNF06 |
 | **US09** — Remover alimento | RN06, RN17, RN20 | — | RNF01, RNF05, RNF06 |
 | **US10** — Visualizar alimentos por validade | RN04, RN11, RN12, RN16, RN17 | — | RNF02, RNF03, RNF04, RNF06 |
 | **US11** — Filtrar por estado | RN05, RN11, RN17 | — | RNF02, RNF04, RNF06 |
@@ -64,7 +64,7 @@ A priorização orienta o planejamento do MVP, garantindo a viabilidade do núcl
 * **US02** — Fazer login: autenticação e proteção dos endpoints.
 * **US05** — Cadastrar alimento: entrada de dados e cálculo de validade.
 * **US06** — Registrar abertura: controle de perecibilidade pós-abertura do lacre.
-* **US10** — Visualizar alimentos por prioridade: tela central de acompanhamento e alertas.
+* **US10** — Visualizar alimentos por validade: tela central de acompanhamento e alertas.
 * **US14** — Registrar consumo ou descarte: baixa de estoque e fechamento do ciclo de vida.
 
 ### Should Have (Importante, mas com alternativas manuais provisórias)
