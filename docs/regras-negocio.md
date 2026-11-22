@@ -24,7 +24,9 @@
 * Essa menor data calculada é a referência única utilizada para classificação de situação, ordenação e disparo de alertas.
 
 #### RN04 — Situação da validade
-* O sistema classifica dinamicamente o alimento comparando a data atual com a sua data limite efetiva:
+* O sistema classifica o alimento comparando a data de referência do sistema (RN16) com a sua data limite efetiva. A situação é calculada a cada consulta e não é persistida no banco:
+| **Vence hoje** | Data de referência rigorosamente igual à data limite (Δt = 0) |
+| **Vencido** | Data de referência posterior à data limite (Δt < 0) |
 
 | Situação | Condição Cronológica |
 | :--- | :--- |
@@ -34,8 +36,8 @@
 | **Vencido** | Data atual posterior à data limite ($\Delta t < 0$) |
 
 #### RN10 — Data de abertura
-* A data de abertura deve ser menor ou igual à data atual local.
-* É expressamente proibido registrar ou salvar uma data de abertura com valor futuro.
+* A data de abertura deve ser menor ou igual à data de referência do sistema (RN16).
+* É expressamente proibido registrar ou salvar uma data de abertura posterior à data de referência.
 
 #### RN12 — Período de alerta
 * O sistema deve aplicar sinalização destacada de prioridade/atenção para alimentos que:
@@ -44,8 +46,9 @@
 * Alimentos já vencidos permanecem identificados explicitamente como "Vencido", mas não compõem a categoria de alerta de vencimento iminente.
 
 #### RN16 — Referência de data
-* Todas as rotinas de cálculo de vigência, ordenação por proximidade e transição automática de situação utilizam como referência o fuso e a data local do dispositivo/navegador do cliente.
-
+* Todas as rotinas de cálculo de vigência, ordenação por proximidade e classificação de situação utilizam como referência a data de referência do sistema, obtida no servidor no momento da requisição.
+* A data de referência não depende do relógio, do fuso ou da configuração do dispositivo do usuário.
+* Datas de calendário (validade, abertura e limite) são tratadas como dias puros, sem componente de hora, no formato YYYY-MM-DD.
 ---
 
 ### 1.2 Gestão de Estoque, Ciclo de Vida e Estados
