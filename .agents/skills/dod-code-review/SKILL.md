@@ -50,9 +50,10 @@ Reprove imediatamente o código se encontrar qualquer uma das seguintes violaç�
 
 ---
 
-### Portão 4: Tipagem Estrita e Cobertura de Testes BDD (`DoD`)
-1. Existe algum `any`, `@ts-ignore` ou erro no `tsc --noEmit`? $\rightarrow$ **REPROVAR**.
-2. Todos os cenários BDD (Gherkin) da User Story pai associados àquela Task Técnica possuem testes automatizados (`Vitest` / `Playwright`) passando?
+### Portão 4: Formatação (`Prettier`), Tipagem Estrita e Não-Regressão de Testes (`DoD`)
+1. O `Prettier` (`npm run format:check`) e o `ESLint` (`npm run lint`) foram executados no terminal e passaram com zero erros? $\rightarrow$ Se não, **REPROVAR**.
+2. Existe algum `any`, `@ts-ignore` ou erro no `npm run typecheck` (`tsc --noEmit`)? $\rightarrow$ **REPROVAR**.
+3. A suíte completa de testes (`npm test`) foi executada no terminal, cobrindo todos os cenários BDD da User Story pai **e garantindo zero regressão nos testes existentes**? $\rightarrow$ Se não, **REPROVAR**.
 
 ---
 

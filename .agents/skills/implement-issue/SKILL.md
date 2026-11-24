@@ -36,13 +36,15 @@ Respeite rigorosamente as regras de `/AGENTS.md`:
    * Passe `contaId` obrigatoriamente para todos os métodos do `Repository`.
    * Use `prisma.$transaction` em operações que alterem mais de um registro (como abertura parcial `RN08`, baixa com snapshot `RN20`/`RN21` e redefinição de senha com consumo de token `US03`).
 
-## Passo 3: Testes Automatizados (DoD) e Verificação
+## Passo 3: Testes Automatizados (DoD), Prettier e Verificação de Não-Regressão
 
 1. Implemente os testes automatizados (`Vitest`) exigidos na seção **"5. Critério de Pronto (DoD & Testes)"** da issue, cobrindo todos os cenários BDD (caminho feliz + fluxos de exceção).
-2. Execute a verificação completa:
-   * Typecheck (`tsc --noEmit`)
-   * Linter
-   * Suíte de testes (`npm test`)
+2. **Regra Anti-Alucinação:** Nunca assuma que o código funciona sem rodar os comandos abaixo no terminal. Execute e valide que todos retornam código `0`:
+   * **Prettier (Formatação):** `npm run format` seguido de `npm run format:check`
+   * **ESLint (Análise Estática):** `npm run lint`
+   * **Typecheck (`TypeScript`):** `npm run typecheck` (`tsc --noEmit`)
+   * **Suíte Completa de Testes (Não-Regressão):** `npm test` (deve rodar todos os testes do repositório para garantir que nenhuma funcionalidade anterior foi quebrada).
+3. Se qualquer um dos 4 comandos falhar, corrija o problema imediatamente e rode novamente até que todos os 4 passem.
 
 ## Passo 4: Auditoria de Code Review e Atualização do Board
 

@@ -77,5 +77,11 @@ O backend é dividido nos módulos do Modelo C4 (`auth`, `estoque`, `baixas`, `s
 ## 4. Padrões de Qualidade de Código e Definition of Done (DoD)
 
 * **TypeScript Estrito:** Proibido usar `any`, `@ts-ignore` ou asserções inseguras.
-* **Código Limpo:** Funções pequenas e coesas, nomes semânticos alinhados ao Glossário (`docs/modelo-conceitual.md`), zero código morto ou `console.log` esquecido.
-* **Testes Obrigatórios:** Nenhuma issue técnica pode ser considerada concluída sem que seus testes automatizados (`Vitest` / `Playwright`) cobrindo os cenários BDD da User Story pai estejam escritos e passando (`npm test` e `tsc --noEmit` verdes).
+* **Código Limpo e Padronizado (`Prettier` + `ESLint`):** Funções pequenas e coesas, nomes semânticos alinhados ao Glossário (`docs/modelo-conceitual.md`), formatação padronizada via `Prettier` e zero código morto ou `console.log` esquecido.
+* **Verificação Anti-Alucinação e Não-Regressão (Obrigatória no Terminal):**
+  * **PROIBIDO** considerar qualquer alteração ou issue concluída apenas por inspeção visual do código.
+  * Antes de encerrar qualquer tarefa ou fazer commit, o agente **DEVE** obrigatoriamente executar no terminal e comprovar saída sem erros (`exit code 0`):
+    1. **Formatação (`Prettier`):** `npm run format` / `npm run format:check`
+    2. **Linter (`ESLint`):** `npm run lint`
+    3. **Tipagem (`TypeScript`):** `npm run typecheck` (`tsc --noEmit`)
+    4. **Suíte Completa de Testes e Regressão (`Vitest`):** `npm test` (garantindo que os novos testes da tarefa **e todos os testes anteriores do projeto** continuam passando sem regressão).
