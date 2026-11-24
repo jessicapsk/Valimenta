@@ -1,0 +1,59 @@
+name: Valimenta CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate:
+    name: Lint, Typecheck & Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: valimenta
+          POSTGRES_PASSWORD: valimenta_test_pass
+          POSTGRES_DB: valimenta_test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U valimenta -d valimenta_test_db"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      NODE_ENV: test
+      PORT: 3333
+      DATABASE_URL: postgresql://valimenta:valimenta_test_pass@localhost:5432/valimenta_test_db?schema=public
+      JWT_SECRET: valimenta-ci-test-secret-key-min-32-chars
+      FRONTEND_ORIGIN: http://localhost:5173
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting (Prettier)
+        run: npm run format:check
+
+      - name: Run linter (ESLint)
+        run: npm run lint
+
+      - name: Run typecheck (TypeScript strict)
+        run: npm run typecheck
+
+      - name: Run test suite (Vitest)
+        run: npm test
