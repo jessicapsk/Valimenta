@@ -21,6 +21,11 @@ Siga este procedimento passo a passo para implementar qualquer Task Técnica (`#
    ```bash
    python3 .agents/skills/implement-issue/scripts/update_board.py <NUMERO_DA_ISSUE> "In Progress"
    ```
+4. Garanta que está atualizado na branch `develop` e crie uma branch dedicada para a Task Técnica:
+   ```bash
+   git checkout develop && git pull origin develop
+   git checkout -b feat/<NUMERO_DA_ISSUE>-<slug-curto>
+   ```
 
 ## Passo 2: Implementação com Arquitetura Limpa em Camadas
 
@@ -54,7 +59,8 @@ Respeite rigorosamente as regras de `/AGENTS.md`:
    ```
 2. Ative e execute a skill **`dod-code-review`** (`../dod-code-review/SKILL.md`) para auditar o código gerado contra vazamento de camadas e regras de negócio.
 3. Somente após a aprovação sem apontamentos críticos no Code Review:
-   * Mova o card da issue para **`Done`**:
+   * Faça o commit na branch da feature (`feat(#<NUMERO_DA_ISSUE>): ...`), envie a branch (`git push -u origin feat/<NUMERO_DA_ISSUE>-...`) e abra o **Pull Request** apontando para a base **`develop`** (`gh pr create --base develop ...` referenciando `#<NUMERO_DA_ISSUE>` no corpo para vincular automaticamente à coluna `Linked pull requests` do Board).
+   * Realize o merge do PR na `develop` (`gh pr merge --merge --delete-branch` ou após aprovação) e feche/mova o card da issue para **`Done`** no Board:
      ```bash
      python3 .agents/skills/implement-issue/scripts/update_board.py <NUMERO_DA_ISSUE> "Done"
      ```

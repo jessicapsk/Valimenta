@@ -85,3 +85,7 @@ O backend é dividido nos módulos do Modelo C4 (`auth`, `estoque`, `baixas`, `s
     2. **Linter (`ESLint`):** `npm run lint`
     3. **Tipagem (`TypeScript`):** `npm run typecheck` (`tsc --noEmit`)
     4. **Suíte Completa de Testes e Regressão (`Vitest`):** `npm test` (garantindo que os novos testes da tarefa **e todos os testes anteriores do projeto** continuam passando sem regressão).
+* **Fluxo de Branches e Pull Requests (GitFlow por Sprint):**
+  * **Proibido** commitar código de tasks diretamente na `main` ou na `develop`.
+  * A branch de integração contínua das Sprints é a **`develop`**.
+  * Para cada Task Técnica (`#22` a `#58`), criar uma branch dedicada a partir da `develop` (ex.: `feat/22-setup-monorepo-ci`), fazer o commit referenciando a issue (`feat(#22): ...`), abrir **Pull Request** apontando para a base **`develop`** (`gh pr create --base develop`), registrar a auditoria do DoD e realizar o merge na `develop`. Ao final de cada Sprint, é aberto o PR de release `develop -> main`.
