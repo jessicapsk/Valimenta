@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { RegisterForm } from '../features/auth/components/RegisterForm.tsx';
+import { useAuth } from '../features/auth/context/AuthContext.tsx';
 import type { PublicAccountDTO, RegisterAccountInput } from '../features/auth/api/auth.api.ts';
 
 export interface RegisterPageProps {
@@ -9,8 +10,10 @@ export interface RegisterPageProps {
 
 export function RegisterPage({ onAccountCreated, registerFn }: RegisterPageProps) {
   const navigate = useNavigate();
+  const { setAuthenticatedAccount } = useAuth();
 
   function handleSuccess(conta: PublicAccountDTO) {
+    setAuthenticatedAccount(conta);
     onAccountCreated?.(conta);
     navigate('/alimentos', { replace: true });
   }

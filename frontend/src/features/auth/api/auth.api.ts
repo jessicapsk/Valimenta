@@ -12,6 +12,11 @@ export interface RegisterAccountInput {
   senha: string;
 }
 
+export interface LoginAccountInput {
+  email: string;
+  senha: string;
+}
+
 export class ApiError extends Error {
   public readonly statusCode: number;
   public readonly code: string;
@@ -50,6 +55,61 @@ export async function registerAccount(
       data.message ?? 'Não foi possível concluir o cadastro.',
       response.status,
       data.code ?? 'API_ERROR',
+    );
+  }
+
+  return { conta: data.conta };
+}
+
+export async function loginAccount(
+  input: LoginAccountInput,
+  fetchImpl: typeof fetch = fetch,
+): Promise<AuthAccountResponse> {
+  const response = await fetchImpl(`${API_BASE_URL}/api/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(input),
+  });
+
+  const data = (await response.json()) as {
+    conta?: PublicAccountDTO;
+    message?: string;
+    code?: string;
+  };
+
+  if (!response.ok || !data.conta) {
+    throw new ApiError(
+      data.message ?? 'E-mail ou senha incorretos.',
+      response.status,
+      data.code ?? 'INVALID_CREDENTIALS',
+    );
+  }
+
+  return { conta: data.conta };
+}
+
+export async function fetchCurrentAccount(
+  fetchImpl: typeof fetch = fetch,
+): Promise<AuthAccountResponse> {
+  const response = await fetchImpl(`${API_BASE_URL}/api/auth/me`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  const data = (await response.json()) as {
+    conta?: PublicAccountDTO;
+    message?: string;
+    code?: string;
+  };
+
+  if (!response.ok || !data.conta) {
+    throw new ApiError(
+      data.message ?? 'Não autenticado.',
+      response.status,
+      data.code ?? 'UNAUTHORIZED',
     );
   }
 
