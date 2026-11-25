@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EstadoAlimento {
+  FECHADO
+  ABERTO
+}
+
+enum TipoMovimentacao {
+  CONSUMO
+  DESCARTE
+}
+
+enum MotivoDescarte {
+  VENCIMENTO
+  ESTRAGADO
+  EMBALAGEM_DANIFICADA
+  NAO_SERA_CONSUMIDO
+  OUTRO
+}
+
+model Conta {
+  id            String         @id @default(uuid()) @db.Uuid
+  email         String         @unique
+  senhaHash     String         @map("senha_hash")
+  criadoEm      DateTime       @default(now()) @map("criado_em")
+  alimentos     Alimento[]
+  movimentacoes Movimentacao[]
+
+  @@map("conta")
+}
+
+model Categoria {
+  id              String     @id @default(uuid()) @db.Uuid
+  nome            String     @unique
+  prazoPadraoDias Int        @map("prazo_padrao_dias")
+  alimentos       Alimento[]
+
+  @@map("categoria")
+}
+
+model Alimento {
+  id                String         @id @default(uuid()) @db.Uuid
+  contaId           String         @map("conta_id") @db.Uuid
+  categoriaId       String         @map("categoria_id") @db.Uuid
+  nome              String
+  quantidade        Int
+  estado            EstadoAlimento @default(FECHADO)
+  validadeOriginal  DateTime       @map("validade_original") @db.Date
+  dataAbertura      DateTime?      @map("data_abertura") @db.Date
+  prazoAberturaDias Int?           @map("prazo_abertura_dias")
+  dataLimiteEfetiva DateTime       @map("data_limite_efetiva") @db.Date
+  criadoEm          DateTime       @default(now()) @map("criado_em")
+  atualizadoEm      DateTime       @updatedAt @map("atualizado_em")
+
+  conta         Conta          @relation(fields: [contaId], references: [id], onDelete: Cascade)
+  categoria     Categoria      @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+  movimentacoes Movimentacao[]
+
+  @@index([contaId, dataLimiteEfetiva, nome])
+  @@map("alimento")
+}
+
+model Movimentacao {
+  id                String           @id @default(uuid()) @db.Uuid
+  contaId           String           @map("conta_id") @db.Uuid
+  alimentoId        String?          @map("alimento_id") @db.Uuid
+  tipo              TipoMovimentacao
+  quantidade        Int
+  dataHora          DateTime         @default(now()) @map("data_hora")
+  motivoDescarte    MotivoDescarte?  @map("motivo_descarte")
+  descricaoOutro    String?          @map("descricao_outro")
+  nomeSnapshot      String           @map("nome_snapshot")
+  categoriaSnapshot String           @map("categoria_snapshot")
+
+  conta    Conta     @relation(fields: [contaId], references: [id], onDelete: Cascade)
+  alimento Alimento? @relation(fields: [alimentoId], references: [id], onDelete: Restrict)
+
+  @@index([contaId, dataHora])
+  @@map("movimentacao")
+}

@@ -7,6 +7,9 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:seed": "tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --configLoader runner"
   },
@@ -14,12 +17,14 @@
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^10.0.2",
     "@fastify/jwt": "^9.0.4",
+    "@prisma/client": "^6.3.1",
     "fastify": "^5.2.1",
     "fastify-type-provider-zod": "^4.0.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.10",
+    "prisma": "^6.3.1",
     "tsx": "^4.19.2",
     "vitest": "^3.0.4"
   }
