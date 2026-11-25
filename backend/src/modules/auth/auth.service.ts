@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
-import { ConflictError } from '../../shared/domain/errors.js';
+import { ConflictError, UnauthorizedError } from '../../shared/domain/errors.js';
 import type { IAccountRepository } from './account.repository.js';
-import type { PublicAccountDTO, RegisterInputDTO } from './auth.schema.js';
+import type { LoginInputDTO, PublicAccountDTO, RegisterInputDTO } from './auth.schema.js';
 
 const BCRYPT_SALT_ROUNDS = 10;
+const DUMMY_BCRYPT_HASH = '$2b$10$CwTycUXWue0Thq9StjUM0uJ8p4r1xH9iK/X.C6O2eS7y2q9L0R5yG';
 
 export class AuthService {
   private readonly accountRepository: IAccountRepository;
@@ -35,6 +36,46 @@ export class AuthService {
     return {
       id: createdAccount.id,
       email: createdAccount.email,
+    };
+  }
+
+  /**
+   * US02 — Fazer login (RN17, RNF06):
+   * Autentica e-mail e senha contra o hash bcrypt, retornando erro neutro
+   * ("E-mail ou senha incorretos.") sem revelar se o e-mail existe no banco.
+   */
+  public async login(input: LoginInputDTO): Promise<PublicAccountDTO> {
+    const normalizedEmail = input.email.trim().toLowerCase();
+    const account = await this.accountRepository.findByEmail(normalizedEmail);
+
+    if (!account) {
+      await bcrypt.compare(input.senha, DUMMY_BCRYPT_HASH);
+      throw new UnauthorizedError('E-mail ou senha incorretos.', 'INVALID_CREDENTIALS');
+    }
+
+    const isPasswordValid = await bcrypt.compare(input.senha, account.senhaHash);
+    if (!isPasswordValid) {
+      throw new UnauthorizedError('E-mail ou senha incorretos.', 'INVALID_CREDENTIALS');
+    }
+
+    return {
+      id: account.id,
+      email: account.email,
+    };
+  }
+
+  /**
+   * US02 — Consulta da conta autenticada na sessão ativa (RN17, RNF06).
+   */
+  public async getProfile(contaId: string): Promise<PublicAccountDTO> {
+    const account = await this.accountRepository.findById(contaId);
+    if (!account) {
+      throw new UnauthorizedError('Não autenticado.');
+    }
+
+    return {
+      id: account.id,
+      email: account.email,
     };
   }
 }
