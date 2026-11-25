@@ -1,4 +1,5 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom';
+import { AppHeader } from './components/layout/AppHeader.tsx';
 import { ProtectedRoute } from './features/auth/components/ProtectedRoute.tsx';
 import { AuthProvider } from './features/auth/context/AuthContext.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
@@ -29,9 +30,18 @@ function HomeRedirectView() {
   );
 }
 
+function AuthenticatedShell() {
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <AppHeader />
+      <Outlet />
+    </div>
+  );
+}
+
 function FoodsEmptyPlaceholderView() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center p-4">
+    <main className="mx-auto flex max-w-4xl flex-col items-center justify-center p-6">
       <h1 className="text-2xl font-bold text-slate-900">Minha Despensa</h1>
       <p className="mt-2 text-sm text-slate-600">Nenhum alimento cadastrado no momento.</p>
     </main>
@@ -40,7 +50,7 @@ function FoodsEmptyPlaceholderView() {
 
 function HistoryPlaceholderView() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center p-4">
+    <main className="mx-auto flex max-w-4xl flex-col items-center justify-center p-6">
       <h1 className="text-2xl font-bold text-slate-900">Histórico de Movimentações</h1>
     </main>
   );
@@ -48,7 +58,7 @@ function HistoryPlaceholderView() {
 
 function WastePlaceholderView() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center p-4">
+    <main className="mx-auto flex max-w-4xl flex-col items-center justify-center p-6">
       <h1 className="text-2xl font-bold text-slate-900">Painel de Desperdício</h1>
     </main>
   );
@@ -63,9 +73,11 @@ export function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<RegisterPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/alimentos" element={<FoodsEmptyPlaceholderView />} />
-            <Route path="/historico" element={<HistoryPlaceholderView />} />
-            <Route path="/desperdicio" element={<WastePlaceholderView />} />
+            <Route element={<AuthenticatedShell />}>
+              <Route path="/alimentos" element={<FoodsEmptyPlaceholderView />} />
+              <Route path="/historico" element={<HistoryPlaceholderView />} />
+              <Route path="/desperdicio" element={<WastePlaceholderView />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

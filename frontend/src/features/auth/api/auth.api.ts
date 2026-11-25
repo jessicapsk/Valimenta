@@ -115,3 +115,25 @@ export async function fetchCurrentAccount(
 
   return { conta: data.conta };
 }
+
+export async function logoutAccount(fetchImpl: typeof fetch = fetch): Promise<{ message: string }> {
+  const response = await fetchImpl(`${API_BASE_URL}/api/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+
+  const data = (await response.json()) as {
+    message?: string;
+    code?: string;
+  };
+
+  if (!response.ok) {
+    throw new ApiError(
+      data.message ?? 'Não foi possível encerrar a sessão.',
+      response.status,
+      data.code ?? 'LOGOUT_ERROR',
+    );
+  }
+
+  return { message: data.message ?? 'Sessão encerrada com sucesso.' };
+}

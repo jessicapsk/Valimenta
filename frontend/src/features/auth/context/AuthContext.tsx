@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import {
   fetchCurrentAccount,
+  logoutAccount,
   type AuthAccountResponse,
   type PublicAccountDTO,
 } from '../api/auth.api.ts';
@@ -10,6 +11,7 @@ export interface AuthContextValue {
   isLoading: boolean;
   setAuthenticatedAccount: (conta: PublicAccountDTO) => void;
   clearAuthenticatedAccount: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -19,10 +21,11 @@ export interface AuthProviderProps {
   initialAccount?: PublicAccountDTO | null;
   skipInitialCheck?: boolean;
   checkSessionFn?: () => Promise<AuthAccountResponse>;
+  logoutFn?: () => Promise<{ message: string }>;
 }
 
 /**
- * AuthProvider (US02 / RN17 / RNF06):
+ * AuthProvider (US02 / US04 / RN17 / RNF06):
  * Mantém o estado da conta autenticada exclusivamente em memória e via cookie HttpOnly
  * validado pelo endpoint GET /api/auth/me (jamais armazena tokens em localStorage/sessionStorage).
  */
@@ -31,6 +34,7 @@ export function AuthProvider({
   initialAccount = null,
   skipInitialCheck = false,
   checkSessionFn = fetchCurrentAccount,
+  logoutFn = logoutAccount,
 }: AuthProviderProps) {
   const [conta, setConta] = useState<PublicAccountDTO | null>(initialAccount);
   const [isLoading, setIsLoading] = useState<boolean>(!skipInitialCheck && initialAccount === null);
@@ -71,6 +75,14 @@ export function AuthProvider({
     setConta(null);
   }
 
+  async function logout() {
+    try {
+      await logoutFn();
+    } finally {
+      setConta(null);
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -78,6 +90,7 @@ export function AuthProvider({
         isLoading,
         setAuthenticatedAccount,
         clearAuthenticatedAccount,
+        logout,
       }}
     >
       {children}
@@ -93,6 +106,7 @@ export function useAuth(): AuthContextValue {
       isLoading: false,
       setAuthenticatedAccount: () => undefined,
       clearAuthenticatedAccount: () => undefined,
+      logout: async () => undefined,
     };
   }
   return context;
