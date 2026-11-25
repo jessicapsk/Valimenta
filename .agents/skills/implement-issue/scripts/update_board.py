@@ -112,7 +112,29 @@ def main():
         "fieldId": field["id"],
         "optionId": option_id,
     })
-    print(f"[Board] Issue #{issue_number} ({issue_title}) -> Execução = '{target_status}'")
+
+    desired_issue_state = "closed" if target_status.lower() == "done" else "open"
+    issue_payload = {"state": desired_issue_state}
+    if desired_issue_state == "closed":
+        issue_payload["state_reason"] = "completed"
+
+    req_issue = urllib.request.Request(
+        f"https://api.github.com/repos/jessicapsk/Valimenta/issues/{issue_number}",
+        data=json.dumps(issue_payload).encode("utf-8"),
+        method="PATCH",
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+            "Content-Type": "application/json",
+            "User-Agent": "Valimenta-Skill-Board-Updater",
+        },
+    )
+    with urllib.request.urlopen(req_issue, timeout=20):
+        pass
+
+    print(
+        f"[Board] Issue #{issue_number} ({issue_title}) -> Execução = '{target_status}' (GitHub state = {desired_issue_state})"
+    )
 
 
 if __name__ == "__main__":
