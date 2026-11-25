@@ -60,7 +60,7 @@ Respeite rigorosamente as regras de `/AGENTS.md`:
 2. Ative e execute a skill **`dod-code-review`** (`../dod-code-review/SKILL.md`) para auditar o código gerado contra vazamento de camadas e regras de negócio.
 3. Somente após a aprovação sem apontamentos críticos no Code Review:
    * Faça o commit na branch da feature (`feat(#<NUMERO_DA_ISSUE>): ...`), envie a branch (`git push -u origin feat/<NUMERO_DA_ISSUE>-...`) e abra o **Pull Request** apontando para a base **`develop`** (`gh pr create --base develop ...` referenciando `#<NUMERO_DA_ISSUE>` no corpo para vincular automaticamente à coluna `Linked pull requests` do Board).
-   * Realize o merge do PR na `develop` (`gh pr merge --merge --delete-branch` ou após aprovação) e feche/mova o card da issue para **`Done`** no Board:
+   * Realize o merge do PR na `develop` usando `gh pr merge --merge` (**NUNCA** use `--delete-branch` — todas as branches devem permanecer salvas e visíveis no GitHub!) e mova o card da issue para **`Done`** no Board:
      ```bash
      python3 .agents/skills/implement-issue/scripts/update_board.py <NUMERO_DA_ISSUE> "Done"
      ```
