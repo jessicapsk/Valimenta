@@ -34,3 +34,7 @@ export type PublicAccountDTO = z.infer<typeof publicAccountSchema>;
 export const authAccountResponseSchema = z.object({
   conta: publicAccountSchema,
 });
+
+export const logoutResponseSchema = z.object({
+  message: z.string(),
+});

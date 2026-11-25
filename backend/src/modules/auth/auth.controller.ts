@@ -1,7 +1,12 @@
 import type { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { requireAuth } from '../../shared/http/middlewares/require-auth.js';
-import { authAccountResponseSchema, loginBodySchema, registerBodySchema } from './auth.schema.js';
+import {
+  authAccountResponseSchema,
+  loginBodySchema,
+  logoutResponseSchema,
+  registerBodySchema,
+} from './auth.schema.js';
 import type { AuthService } from './auth.service.js';
 import type { SessionManager } from './session.manager.js';
 
@@ -66,6 +71,21 @@ export async function authRoutes(app: FastifyInstance, deps: AuthRoutesDependenc
     async (request, reply) => {
       const conta = await deps.authService.getProfile(request.user.contaId);
       return reply.status(200).send({ conta });
+    },
+  );
+
+  typedApp.post(
+    '/api/auth/logout',
+    {
+      schema: {
+        response: {
+          200: logoutResponseSchema,
+        },
+      },
+    },
+    async (_request, reply) => {
+      deps.sessionManager.clearSessionCookie(reply);
+      return reply.status(200).send({ message: 'Sessão encerrada com sucesso.' });
     },
   );
 }
